@@ -1,0 +1,88 @@
+package org.gbu.restaurant
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import com.moriatsushi.insetsx.SystemBarsBehavior
+import com.moriatsushi.insetsx.rememberWindowInsetsController
+import org.gbu.restaurant.decompose.root.RestaurantRoot
+import org.gbu.restaurant.koin.LocalKoinApplication
+import org.gbu.restaurant.ui.screens.OnBoardingPage
+import org.gbu.restaurant.ui.screens.SignInOptionsPage
+import org.gbu.restaurant.ui.screens.SplashPage
+import org.gbu.restaurant.viewmodels.LocalUser
+
+@Composable
+fun RestaurantApplication(
+    root: RestaurantRoot
+) {
+
+    val windowsInsets = rememberWindowInsetsController()
+    val user by root.rootViewModel.user.collectAsState()
+
+    LaunchedEffect(Unit) {
+        windowsInsets?.let {
+            windowsInsets.setIsNavigationBarsVisible(false)
+            windowsInsets.setIsStatusBarsVisible(false)
+            windowsInsets.setSystemBarsBehavior(SystemBarsBehavior.Immersive)
+        }
+    }
+
+    MaterialTheme { // TODO replace with application Theme
+        CompositionLocalProvider(
+            LocalKoinApplication provides root.koinApplication,
+            LocalUser provides user
+        ) {
+            val stack by root.backstack.subscribeAsState()
+            val current = stack.active.instance
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Children(
+                    stack = stack,
+                    modifier = Modifier.weight(1f)
+                ) { childCreated ->
+                    when (val child = childCreated.instance) {
+                        is RestaurantRoot.MainDestinationChild.Splash -> {
+                            SplashPage(
+                                viewModel = child.component.viewModel,
+                                onSplashFinished = { onBoardedBefore ->
+                                    child.component.onSplashTimeFinish(
+                                        isOnBoardedBefore = onBoardedBefore
+                                    )
+                                }
+                            )
+                        }
+
+                        is RestaurantRoot.MainDestinationChild.OnBoarding -> {
+                            OnBoardingPage(onGetStarted = { child.component.onBoarded() })
+                        }
+
+                        is RestaurantRoot.MainDestinationChild.SignInOptions -> {
+                            SignInOptionsPage(
+                                onCreateAccount = { child.component.onCreateAccountClicked() },
+                                onSignInAccount = { child.component.onSignInToAccountClicked() }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

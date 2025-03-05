@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="app_name">Restaurant DEMO</string>
+    <string name="on_boarding_title">Title text of onboarding page</string>
+    <string name="on_boarding_message">Message text of onboarding page. Message text of onboarding page. Message text of onboarding page. 3 times</string>
+    <string name="get_started">Get started</string>
+    <string name="save_in_your_pocket">Save in your pocket</string>
+    <string name="sign_in_with_restaurant_account">Sign in with Restaurant</string>
+    <string name="sign_in_with_google_account">Sign in with Google</string>
+    <string name="sign_in_with_apple_account">Sign in with Apple</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="by_continue_you_agree_terms">By continue you agree with terms and conditions</string>
+    <string name="terms_and_conditions">You must bla bla bla then bla bla bla TODO fulfill terms and conditions, hop hey la la ley gde voposi gde otvety</string>
+    <string name="privacy_and_policies">Privacy and policies hey hey hey</string>
+</resources>
