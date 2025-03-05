@@ -12,4 +12,8 @@
     <string name="by_continue_you_agree_terms">By continue you agree with terms and conditions</string>
     <string name="terms_and_conditions">You must bla bla bla then bla bla bla TODO fulfill terms and conditions, hop hey la la ley gde voposi gde otvety</string>
     <string name="privacy_and_policies">Privacy and policies hey hey hey</string>
+    <string name="phone_number">000000000</string>
+    <string name="you_will_receive_otp">You will receive an OTP</string>
+    <string name="verify_phone_number">Verify phone number</string>
+    <string name="facing_any_issues">Facing any issues?</string>
 </resources>

@@ -38,7 +38,9 @@ fun SplashPage(
         }
 
         is SplashUIState.Success -> {
-            onSplashFinished((loggedUser as SplashUIState.Success).onBoardBefore)
+            (loggedUser as SplashUIState.Success).let {
+                onSplashFinished(it.onBoardBefore)
+            }
         }
     }
 

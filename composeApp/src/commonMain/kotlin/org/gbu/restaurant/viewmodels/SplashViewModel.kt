@@ -17,6 +17,9 @@ class SplashViewModel : InstanceKeeper.Instance {
     private val _uiState = MutableStateFlow<SplashUIState>(SplashUIState.Waiting)
     val uiState: StateFlow<SplashUIState> = _uiState
 
+    init {
+        checkOnBoardingState()
+    }
 
     private fun checkOnBoardingState() {
         viewModelScope.launch {

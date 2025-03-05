@@ -18,6 +18,8 @@ import com.moriatsushi.insetsx.SystemBarsBehavior
 import com.moriatsushi.insetsx.rememberWindowInsetsController
 import org.gbu.restaurant.decompose.root.RestaurantRoot
 import org.gbu.restaurant.koin.LocalKoinApplication
+import org.gbu.restaurant.ui.screens.ContactPage
+import org.gbu.restaurant.ui.screens.LoginPage
 import org.gbu.restaurant.ui.screens.OnBoardingPage
 import org.gbu.restaurant.ui.screens.SignInOptionsPage
 import org.gbu.restaurant.ui.screens.SplashPage
@@ -79,6 +81,26 @@ fun RestaurantApplication(
                                 onCreateAccount = { child.component.onCreateAccountClicked() },
                                 onSignInAccount = { child.component.onSignInToAccountClicked() }
                             )
+                        }
+
+                        is RestaurantRoot.MainDestinationChild.Login -> {
+                            LoginPage(
+                                viewModel = child.component.loginViewModel,
+                                onUserAuthenticated = { user, rememberMe ->
+                                    child.component.onAuthenticationSuccess(
+                                        user = user,
+                                        rememberMe = rememberMe
+                                    )
+                                }
+                            )
+                        }
+
+                        is RestaurantRoot.MainDestinationChild.ContactInfo -> {
+                            ContactPage(
+                                viewModel = child.component.contactsViewModel
+                            ) {
+                                child.component.onOtpSent()
+                            }
                         }
                     }
                 }

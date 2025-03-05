@@ -2,6 +2,8 @@ package org.gbu.restaurant.decompose.root
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import org.gbu.restaurant.decompose.contactsinfo.ContactInfoComponent
+import org.gbu.restaurant.decompose.login.LoginComponent
 import org.gbu.restaurant.decompose.onboarding.OnBoardingComponent
 import org.gbu.restaurant.decompose.signin.SignInOptionsComponent
 import org.gbu.restaurant.decompose.splash.SplashComponent
@@ -14,13 +16,17 @@ interface RestaurantRoot {
     val koinApplication: KoinApplication
     val rootViewModel: RootViewModel
 
-    sealed class MainDestinationChild{
+    sealed class MainDestinationChild {
         class Splash(val component: SplashComponent) : MainDestinationChild()
 
-        class OnBoarding(val component: OnBoardingComponent): MainDestinationChild()
+        class OnBoarding(val component: OnBoardingComponent) : MainDestinationChild()
         // TODO add all screens for navigation
 
-        class SignInOptions(val component: SignInOptionsComponent): MainDestinationChild()
+        class SignInOptions(val component: SignInOptionsComponent) : MainDestinationChild()
+
+        class Login(val component: LoginComponent) : MainDestinationChild()
+
+        class ContactInfo(val component: ContactInfoComponent) : MainDestinationChild()
     }
 
 }

@@ -3,6 +3,7 @@ package org.gbu.restaurant.decompose.root
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -10,7 +11,10 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.gbu.restaurant.decompose.contactsinfo.ContactInfoComponentImpl
+import org.gbu.restaurant.decompose.login.LoginComponentImpl
 import org.gbu.restaurant.decompose.onboarding.OnBoardingComponentImpl
+import org.gbu.restaurant.decompose.signin.SignInOptionsComponentImpl
 import org.gbu.restaurant.decompose.splash.SplashComponentImpl
 import org.gbu.restaurant.viewmodels.RootViewModel
 import org.koin.core.KoinApplication
@@ -50,9 +54,17 @@ class RestaurantRootImpl(
                 )
             )
 
-            is MainNavigationConfig.SignInOptions -> {
-                TODO()
-            }
+            is MainNavigationConfig.SignInOptions -> RestaurantRoot.MainDestinationChild.SignInOptions(
+                component = buildSignInOptionsComponent(context = componentContext)
+            )
+
+            is MainNavigationConfig.Login -> RestaurantRoot.MainDestinationChild.Login(
+                component = buildLoginComponent(componentContext)
+            )
+
+            is MainNavigationConfig.ContactPage -> RestaurantRoot.MainDestinationChild.ContactInfo(
+                component = buildContactInfoComponent(context = componentContext)
+            )
 
             else -> TODO()
         }
@@ -81,6 +93,43 @@ class RestaurantRootImpl(
         }
     })
 
+    private fun buildSignInOptionsComponent(
+        context: ComponentContext
+    ) = SignInOptionsComponentImpl(
+        componentContext = context,
+        onCreateAccount = {
+            mainDispatcher.launch {
+                navigation.push(MainNavigationConfig.ContactPage)
+            }
+        },
+        onSignInToAccount = {
+            mainDispatcher.launch {
+                navigation.push(MainNavigationConfig.Login)
+            }
+        }
+    )
+
+    private fun buildLoginComponent(
+        context: ComponentContext
+    ) = LoginComponentImpl(
+        componentContext = context,
+        onAuthenticated = { user, rememberMe ->
+            mainDispatcher.launch {
+                rootViewModel.updateLoggedUser(user)
+//                navigation.replaceAll(MainNavigationConfig.BottomNavHolder)
+            }
+        }
+    )
+
+    private fun buildContactInfoComponent(
+        context: ComponentContext
+    ) = ContactInfoComponentImpl(
+        componentContext = context,
+        onOtpSentToUser = {
+//            mainDispatcher.launch { navigation.push(MainNavigationConfig.PhoneVerification) } // TODO(complete it when PhoneVerification is implemented)
+        }
+    )
+
     sealed class MainNavigationConfig : Parcelable {
         @Parcelize
         data object Splash : MainNavigationConfig()
@@ -90,6 +139,12 @@ class RestaurantRootImpl(
 
         @Parcelize
         data object SignInOptions : MainNavigationConfig()
+
+        @Parcelize
+        data object Login : MainNavigationConfig()
+
+        @Parcelize
+        data object ContactPage : MainNavigationConfig()
     }
 
 }

@@ -27,7 +27,7 @@ import restaurantdemo.composeapp.generated.resources.Res
 import restaurantdemo.composeapp.generated.resources.apple_logo
 import restaurantdemo.composeapp.generated.resources.by_continue_you_agree_terms
 import restaurantdemo.composeapp.generated.resources.create_an_account
-import restaurantdemo.composeapp.generated.resources.google_icon
+import restaurantdemo.composeapp.generated.resources.google_logo
 import restaurantdemo.composeapp.generated.resources.hot_food_icon
 import restaurantdemo.composeapp.generated.resources.privacy_and_policies
 import restaurantdemo.composeapp.generated.resources.save_in_your_pocket
@@ -99,7 +99,7 @@ fun SignInOptionsPage(
             SignInWithButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(Res.string.sign_in_with_google_account),
-                optionIcon = painterResource(Res.drawable.google_icon),
+                optionIcon = painterResource(Res.drawable.google_logo),
                 textStyle = MaterialTheme.typography.bodyMedium
                     .copy(fontWeight = FontWeight.Normal),
                 containerColor = MaterialTheme.colorScheme.inversePrimary,
