@@ -18,16 +18,21 @@ import com.moriatsushi.insetsx.SystemBarsBehavior
 import com.moriatsushi.insetsx.rememberWindowInsetsController
 import org.gbu.restaurant.decompose.root.RestaurantRoot
 import org.gbu.restaurant.koin.LocalKoinApplication
+import org.gbu.restaurant.sensor.SensorManager
+import org.gbu.restaurant.ui.screens.BottomNavPage
 import org.gbu.restaurant.ui.screens.ContactPage
 import org.gbu.restaurant.ui.screens.LoginPage
 import org.gbu.restaurant.ui.screens.OnBoardingPage
+import org.gbu.restaurant.ui.screens.PhoneVerificationPage
 import org.gbu.restaurant.ui.screens.SignInOptionsPage
 import org.gbu.restaurant.ui.screens.SplashPage
+import org.gbu.restaurant.ui.screens.menudetail.MenuDetailsPage
 import org.gbu.restaurant.viewmodels.LocalUser
 
 @Composable
 fun RestaurantApplication(
-    root: RestaurantRoot
+    root: RestaurantRoot,
+    sensorManager: SensorManager?,
 ) {
 
     val windowsInsets = rememberWindowInsetsController()
@@ -36,12 +41,12 @@ fun RestaurantApplication(
     LaunchedEffect(Unit) {
         windowsInsets?.let {
             windowsInsets.setIsNavigationBarsVisible(false)
-            windowsInsets.setIsStatusBarsVisible(false)
+            windowsInsets.setIsStatusBarsVisible(true)
             windowsInsets.setSystemBarsBehavior(SystemBarsBehavior.Immersive)
         }
     }
 
-    MaterialTheme { // TODO replace with application Theme
+    RestaurantTheme {
         CompositionLocalProvider(
             LocalKoinApplication provides root.koinApplication,
             LocalUser provides user
@@ -101,6 +106,32 @@ fun RestaurantApplication(
                             ) {
                                 child.component.onOtpSent()
                             }
+                        }
+
+                        is RestaurantRoot.MainDestinationChild.PhoneVerification -> {
+                            PhoneVerificationPage(
+                                viewModel = child.component.verifyPhoneViewModel
+                            ) {
+                                child.component.onVerificationCompleted()
+                            }
+                        }
+
+                        is RestaurantRoot.MainDestinationChild.BottomNavHolder -> {
+                            BottomNavPage(
+                                bottomNavComponent = child.component,
+                                onNavigationToMainChild = {
+                                    child.component.onNavigationToMainChild(it)
+                                }
+                            )
+                        }
+
+                        is RestaurantRoot.MainDestinationChild.MenuDetail -> {
+                            MenuDetailsPage(
+                                goBack = { child.component.onBack() },
+                                sensorManager = sensorManager,
+                                menuItemId = child.component.menuItemId,
+                                viewModel = child.component.viewModel
+                            )
                         }
                     }
                 }

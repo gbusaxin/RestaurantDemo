@@ -5,8 +5,13 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import com.arkivanov.decompose.defaultComponentContext
+import org.gbu.restaurant.decompose.root.RestaurantRoot
 import org.gbu.restaurant.decompose.root.RestaurantRootImpl
 import org.gbu.restaurant.koin.initKoinApp
 import org.koin.dsl.module
@@ -14,7 +19,6 @@ import org.koin.dsl.module
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         val koinApplication = initKoinApp(
             listOf(
@@ -29,8 +33,10 @@ class MainActivity : ComponentActivity() {
             koinApplication = koinApplication
         )
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContent {
-            RestaurantApplication(root)
+            MainView(root = root)
         }
     }
 }

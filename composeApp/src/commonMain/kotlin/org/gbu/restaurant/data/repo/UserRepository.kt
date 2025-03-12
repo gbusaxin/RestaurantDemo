@@ -7,7 +7,6 @@ object UserRepository {
 
     private val placeHolderUser = User( // TODO delete when backend implemented
         id = "1",
-        username = "GBu",
         fName = "Greg",
         lName = "Bus",
         phone = "+421950290020",

@@ -1,4 +1,4 @@
-package org.gbu.restaurant.decompose.signin
+package org.gbu.restaurant.ui.composables
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding

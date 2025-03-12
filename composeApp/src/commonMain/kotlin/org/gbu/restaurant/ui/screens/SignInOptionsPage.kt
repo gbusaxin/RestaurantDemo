@@ -19,7 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.gbu.restaurant.decompose.signin.SignInWithButton
+import org.gbu.restaurant.ui.composables.SignInWithButton
 import org.gbu.restaurant.ui.composables.HorizontalBrandLogo
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource

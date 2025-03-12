@@ -36,10 +36,12 @@ class LoginViewModel : InstanceKeeper.Instance {
                     UserRepository.checkUserAuthentication(
                         encryptedPhone = encryptedPhone,
                         encryptedPassword = encryptedPassword
-                    )?.let { user ->
-                        _uiState.update { LoginUIState.Authenticated(user) }
-                    } ?: run {
-                        _uiState.update { LoginUIState.Error.Auth("No user found") }
+                    ).let {
+                        it?.let { user ->
+                            _uiState.update { LoginUIState.Authenticated(user) }
+                        } ?: run {
+                            _uiState.update { LoginUIState.Error.Auth("No user found") }
+                        }
                     }
                 }
             } else {
