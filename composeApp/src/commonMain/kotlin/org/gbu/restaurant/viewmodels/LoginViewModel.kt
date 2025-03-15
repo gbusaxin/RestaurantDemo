@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.gbu.restaurant.data.repo.UserRepository
+import org.gbu.restaurant.business.data.repo.UserRepository
 import org.gbu.restaurant.ui.states.LoginUIState
 import org.gbu.restaurant.utils.encrypt
 import org.gbu.restaurant.utils.validatePassword

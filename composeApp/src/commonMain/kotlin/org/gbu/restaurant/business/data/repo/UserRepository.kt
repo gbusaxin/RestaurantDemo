@@ -1,7 +1,7 @@
-package org.gbu.restaurant.data.repo
+package org.gbu.restaurant.business.data.repo
 
 import kotlinx.coroutines.delay
-import org.gbu.restaurant.data.entity.User
+import org.gbu.restaurant.business.data.entity.User
 
 object UserRepository {
 

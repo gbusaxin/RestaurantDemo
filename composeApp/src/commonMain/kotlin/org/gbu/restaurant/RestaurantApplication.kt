@@ -29,8 +29,8 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.moriatsushi.insetsx.SystemBarsBehavior
 import com.moriatsushi.insetsx.rememberWindowInsetsController
 import org.gbu.restaurant.decompose.root.RestaurantRoot
-import org.gbu.restaurant.koin.LocalKoinApplication
-import org.gbu.restaurant.sensor.SensorManager
+import org.gbu.restaurant.business.koin.LocalKoinApplication
+import org.gbu.restaurant.ui.sensor.SensorManager
 import org.gbu.restaurant.ui.screens.BottomNavPage
 import org.gbu.restaurant.ui.screens.ContactPage
 import org.gbu.restaurant.ui.screens.LoginPage
@@ -39,6 +39,7 @@ import org.gbu.restaurant.ui.screens.PhoneVerificationPage
 import org.gbu.restaurant.ui.screens.SignInOptionsPage
 import org.gbu.restaurant.ui.screens.SplashPage
 import org.gbu.restaurant.ui.screens.menudetail.MenuDetailsPage
+import org.gbu.restaurant.ui.screens.menudetail.viewmodel.MenuDetailEvent
 import org.gbu.restaurant.viewmodels.LocalUser
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -142,12 +143,19 @@ fun RestaurantApplication(
                             }
 
                             is RestaurantRoot.MainDestinationChild.MenuDetail -> {
+                                val viewModel = child.component.viewModel
+                                val id = child.component.menuItemId
+                                LaunchedEffect(id){
+                                    viewModel.onTriggerEvent(MenuDetailEvent.GetMenuItem(id))
+                                }
                                 MenuDetailsPage(
+                                    state = viewModel.state.value,
+                                    events = viewModel::onTriggerEvent,
+                                    errors = viewModel.errors,
                                     goBack = { child.component.onBack() },
                                     sensorManager = sensorManager,
-                                    menuItemId = child.component.menuItemId,
-                                    viewModel = child.component.viewModel,
-                                    sharedTransitionScope = sharedTransitionScope
+                                    sharedTransitionScope = sharedTransitionScope,
+                                    onAddToCart = { /*child.component.onAddToCart()*/ }
                                 )
                             }
                         }

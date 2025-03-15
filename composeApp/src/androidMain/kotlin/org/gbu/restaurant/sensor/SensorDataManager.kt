@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
 import kotlinx.coroutines.channels.Channel
+import org.gbu.restaurant.ui.sensor.SensorData
 import kotlin.math.PI
 
 class SensorDataManager(context: Context): SensorEventListener {

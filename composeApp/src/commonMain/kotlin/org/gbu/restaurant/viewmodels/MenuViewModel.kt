@@ -7,7 +7,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.gbu.restaurant.data.entity.MenuItem
+import org.gbu.restaurant.business.data.entity.MenuItem
 
 class MenuViewModel : InstanceKeeper.Instance {
     private val viewModelScope = CoroutineScope(Dispatchers.Unconfined)

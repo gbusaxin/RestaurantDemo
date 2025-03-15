@@ -2,7 +2,6 @@ package org.gbu.restaurant.decompose.root
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import org.gbu.restaurant.data.entity.MenuItem
 import org.gbu.restaurant.decompose.bottomnavholder.BottomNavComponent
 import org.gbu.restaurant.decompose.contactsinfo.ContactInfoComponent
 import org.gbu.restaurant.decompose.login.LoginComponent

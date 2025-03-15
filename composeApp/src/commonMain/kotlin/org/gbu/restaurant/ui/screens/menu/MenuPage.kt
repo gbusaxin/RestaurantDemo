@@ -1,6 +1,5 @@
 package org.gbu.restaurant.ui.screens.menu
 
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
@@ -23,7 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import org.gbu.restaurant.data.entity.MenuItem
+import org.gbu.restaurant.business.data.entity.MenuItem
 import org.gbu.restaurant.viewmodels.MenuViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)

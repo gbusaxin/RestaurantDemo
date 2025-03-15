@@ -1,4 +1,4 @@
-package org.gbu.restaurant.data.entity
+package org.gbu.restaurant.business.data.entity
 
 import androidx.compose.ui.graphics.Color
 import org.jetbrains.compose.resources.DrawableResource
@@ -16,7 +16,8 @@ data class MenuItem(
     val imageLink: DrawableResource,
     val ingredients: List<Ingredient>,
     val bgColor: Color,
-    val bgImage: DrawableResource? = Res.drawable._01_lemon_cheesecake_bg
+    val bgImage: DrawableResource? = Res.drawable._01_lemon_cheesecake_bg,
+    val price: String
 ) {
     companion object {
         fun fakeList(): List<MenuItem> {
@@ -38,7 +39,8 @@ data class MenuItem(
                         Ingredient("Salami"),
                         Ingredient("Cheese"),
                     ),
-                    Color.Yellow
+                    Color.Yellow,
+                    price = "12.50 €"
                 ),
                 MenuItem(
                     2,
@@ -52,7 +54,8 @@ data class MenuItem(
                         Ingredient("Blue cheese"),
                         Ingredient("Olive oil"),
                     ),
-                    Color.LightGray
+                    Color.LightGray,
+                    price = "15.99 €"
                 ),
                 MenuItem(
                     3,
@@ -66,7 +69,8 @@ data class MenuItem(
                         Ingredient("Blue cheese"),
                         Ingredient("Olive oil"),
                     ),
-                    Color.Red
+                    Color.Red,
+                    price = "8 €"
                 ),
                 MenuItem(
                     4,
@@ -80,7 +84,8 @@ data class MenuItem(
                         Ingredient("Blue cheese"),
                         Ingredient("Olive oil"),
                     ),
-                    Color.Green
+                    Color.Green,
+                    price = "14 €"
                 ),
                 MenuItem(
                     5,
@@ -94,7 +99,8 @@ data class MenuItem(
                         Ingredient("Blue cheese"),
                         Ingredient("Olive oil"),
                     ),
-                    Color.Yellow
+                    Color.Yellow,
+                    price = "17 €"
                 ),
                 MenuItem(
                     6,
@@ -108,7 +114,8 @@ data class MenuItem(
                         Ingredient("Blue cheese"),
                         Ingredient("Olive oil"),
                     ),
-                    Color.Blue
+                    Color.Blue,
+                    price = "19 €"
                 ),
             )
         }

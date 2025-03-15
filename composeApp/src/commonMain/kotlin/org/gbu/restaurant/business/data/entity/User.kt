@@ -1,4 +1,4 @@
-package org.gbu.restaurant.data.entity
+package org.gbu.restaurant.business.data.entity
 
 data class User(
     val id: String,

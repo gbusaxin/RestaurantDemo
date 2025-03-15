@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import kotlinx.coroutines.delay
-import org.gbu.restaurant.data.entity.MenuItem
+import org.gbu.restaurant.business.data.entity.MenuItem
 
 @Composable
 fun AnimateInEffect(

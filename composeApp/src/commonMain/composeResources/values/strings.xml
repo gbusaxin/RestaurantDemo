@@ -28,4 +28,7 @@
     <string name="cart">Cart</string>
     <string name="profile">Profile</string>
     <string name="other">Other</string>
+
+    <string name="no_wifi_error">You are currently offline, please reconnect and try again.</string>
+    <string name="try_again">Try Again</string>
 </resources>

@@ -37,7 +37,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.gbu.restaurant.data.entity.User
+import org.gbu.restaurant.business.data.entity.User
 import org.gbu.restaurant.ui.composables.CustomButton
 import org.gbu.restaurant.ui.composables.InteractionBlocker
 import org.gbu.restaurant.ui.composables.LogoBox

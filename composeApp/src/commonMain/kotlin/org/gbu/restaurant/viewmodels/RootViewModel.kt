@@ -8,7 +8,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import org.gbu.restaurant.data.entity.User
+import org.gbu.restaurant.business.data.entity.User
 
 class RootViewModel : InstanceKeeper.Instance {
 

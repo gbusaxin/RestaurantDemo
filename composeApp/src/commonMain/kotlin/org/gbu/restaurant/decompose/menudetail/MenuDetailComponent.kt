@@ -1,6 +1,6 @@
 package org.gbu.restaurant.decompose.menudetail
 
-import org.gbu.restaurant.viewmodels.MenuDetailsViewModel
+import org.gbu.restaurant.ui.screens.menudetail.viewmodel.MenuDetailsViewModel
 
 interface MenuDetailComponent {
 

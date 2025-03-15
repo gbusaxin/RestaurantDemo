@@ -2,7 +2,7 @@ package org.gbu.restaurant.decompose.menu
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
-import org.gbu.restaurant.data.entity.MenuItem
+import org.gbu.restaurant.business.data.entity.MenuItem
 import org.gbu.restaurant.viewmodels.MenuViewModel
 
 class MenuComponentImpl(

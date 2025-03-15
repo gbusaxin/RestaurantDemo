@@ -2,7 +2,7 @@ package org.gbu.restaurant.decompose.login
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
-import org.gbu.restaurant.data.entity.User
+import org.gbu.restaurant.business.data.entity.User
 import org.gbu.restaurant.viewmodels.LoginViewModel
 
 class LoginComponentImpl(
