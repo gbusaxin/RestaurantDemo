@@ -1,5 +1,7 @@
 package org.gbu.restaurant.ui.screens.menu
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -25,10 +27,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.gbu.restaurant.data.entity.MenuItem
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MenuListItem(
     menuItem: MenuItem,
-    onClick: (menuItem: MenuItem) -> Unit
+    onClick: (menuItem: MenuItem) -> Unit,
+    sharedTransitionScope: SharedTransitionScope
 ) {
     Box(modifier = Modifier) {
         Box(
@@ -47,56 +51,59 @@ fun MenuListItem(
                 .fillMaxHeight()
                 .clickable { onClick(menuItem) }
         ) {
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = menuItem.bgColor
-                ),
-                modifier = Modifier.clip(RoundedCornerShape(35.dp)),
-                shape = RoundedCornerShape(35.dp)
-            ) {
-                Box(
+            with(sharedTransitionScope) {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = menuItem.bgColor
+                    ),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1.5f)
+                        .clip(RoundedCornerShape(35.dp)),
+                    shape = RoundedCornerShape(35.dp)
                 ) {
-                    Row(
+                    Box(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .padding(16.dp)
-                            .fillMaxWidth(0.55f),
-                        verticalAlignment = Alignment.Bottom
+                            .fillMaxWidth()
+                            .aspectRatio(1.5f)
                     ) {
-                        Column(
-                            modifier = Modifier.align(Alignment.Bottom)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(16.dp)
+                                .fillMaxWidth(0.55f),
+                            verticalAlignment = Alignment.Bottom
                         ) {
-                            Text(
-                                modifier = Modifier,
-                                text = menuItem.name,
-                                style = MaterialTheme.typography.titleLarge
-                            )
-                            Text(
-                                text = menuItem.shortDesc,
-                                style = MaterialTheme.typography.displayMedium,
-                                maxLines = 3,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.padding(top = 8.dp)
-                            )
+                            Column(
+                                modifier = Modifier.align(Alignment.Bottom)
+                            ) {
+                                Text(
+                                    modifier = Modifier,
+                                    text = menuItem.name,
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                                Text(
+                                    text = menuItem.shortDesc,
+                                    style = MaterialTheme.typography.displayMedium,
+                                    maxLines = 3,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.padding(top = 8.dp)
+                                )
+                            }
+                            Spacer(modifier = Modifier.weight(1f))
                         }
-                        Spacer(modifier = Modifier.weight(1f))
+                        MenuImageWrapper(
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .fillMaxWidth(0.45f)
+                                .aspectRatio(1f),
+                            alignment = Alignment.BottomEnd,
+                            child = {
+                                MenuImage(
+                                    modifier = Modifier,
+                                    image = menuItem.imageLink
+                                )
+                            }
+                        )
                     }
-                    MenuImageWrapper(
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .fillMaxWidth(0.45f)
-                            .aspectRatio(1f),
-                        alignment = Alignment.BottomEnd,
-                        child = {
-                            MenuImage(
-                                modifier = Modifier,
-                                image = menuItem.imageLink
-                            )
-                        }
-                    )
                 }
             }
         }

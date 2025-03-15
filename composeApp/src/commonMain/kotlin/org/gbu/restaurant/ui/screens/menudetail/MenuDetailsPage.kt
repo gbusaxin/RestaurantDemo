@@ -1,7 +1,12 @@
 package org.gbu.restaurant.ui.screens.menudetail
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.animateIntOffsetAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -47,6 +52,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
+import org.gbu.restaurant.DarkOrange
 import org.gbu.restaurant.sensor.Listener
 import org.gbu.restaurant.sensor.SensorData
 import org.gbu.restaurant.sensor.SensorManager
@@ -54,15 +60,17 @@ import org.gbu.restaurant.viewmodels.MenuDetailsViewModel
 import org.jetbrains.compose.resources.painterResource
 import kotlin.math.PI
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun MenuDetailsPage(
     viewModel: MenuDetailsViewModel,
     menuItemId: Long,
     goBack: () -> Unit,
-    sensorManager: SensorManager?
+    sensorManager: SensorManager?,
+    sharedTransitionScope: SharedTransitionScope
 ) {
     val menuItem = remember { viewModel.findMenuItemById(menuItemId) }
+
     val imageRotation = remember { mutableStateOf(0) }
     val sensorDataLive = remember { mutableStateOf(SensorData(0.0f, 0.0f)) }
     val roll by derivedStateOf { (sensorDataLive.value.roll).coerceIn(-3f, 3f) }
@@ -117,124 +125,155 @@ fun MenuDetailsPage(
     val listState = rememberLazyListState()
     val (fraction, setFraction) = remember { mutableStateOf(1f) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-//            .background(color = ) TODO(make it yellow or sugary colour)
-    ) {
-        LazyColumn(
+    with(sharedTransitionScope) {
+
+        if (sharedTransitionScope.isTransitionActive.not()) {
+            setFraction(0f)
+        }
+
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .nestedScroll(nestedScrollConnection),
-            state = listState
+                .background(color = Color.Yellow)
         ) {
-            stickyHeader {
-                Box(
+            AnimatedContent(targetState = menuItem) {
+                LazyColumn(
                     modifier = Modifier
-                        .shadow(
-                            elevation = if (fraction < 0.5) {
-                                ((1 - fraction) * 16).dp
-                            } else 0.dp,
-                            clip = false,
-                            ambientColor = Color(0xffCE5A01).copy(if (fraction < 0.1) 1f - fraction else 0f),
-                            spotColor = Color(0xffCE5A01).copy(if (fraction < 0.1) 1f - fraction else 0f)
-                        )
-                        .alpha(if (fraction < 0.2) 1f - fraction else 0f)
-                        .fillMaxWidth()
-                        .background(
-                            color = menuItem.bgColor,
-                            shape = RoundedCornerShape(bottomEnd = 35.dp, bottomStart = 35.dp)
-                        )
-                        .clip(RoundedCornerShape(bottomEnd = 35.dp, bottomStart = 35.dp))
-                        .height(candidateHeight.dp)
+                        .fillMaxSize()
+                        .nestedScroll(nestedScrollConnection),
+                    state = listState
                 ) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        //bg image and shadow
-                        menuItem.imageLink?.let { // TODO replace with background image
-                            Image(
-                                painter = painterResource(it),
-                                contentDescription = "background image shadow",
-                                contentScale = ContentScale.FillWidth,
-                                modifier = Modifier
-                                    .offset {
-                                        backgroundShadowOffset.value
-                                    }.graphicsLayer {
-                                        scaleX = 1.050f
-                                        scaleY = 1.050f
-                                    }.blur(radius = 8.dp),
-                                colorFilter = ColorFilter.tint(menuItem.bgColor.copy(alpha = 0.3f)) // TODO replace with dark orange color
-                            )
-                            Image(
-                                painter = painterResource(it),
-                                contentDescription = "background image",
-                                contentScale = ContentScale.FillWidth,
-                                modifier = Modifier
-                                    .background(
-                                        color = Color.Transparent,
-                                        RoundedCornerShape(
-                                            bottomEnd = 35.dp,
-                                            bottomStart = 35.dp
-                                        )
-                                    ).offset {
-                                        backgroundImageOffset.value
-                                    }.graphicsLayer {
-                                        shadowElevation = 8f
-                                        scaleX = 1.050f
-                                        scaleY = 1.050f
-                                    },
-                                alpha = 1 - fraction
-                            )
-                        }
+                    stickyHeader {
                         Box(
                             modifier = Modifier
-                                .aspectRatio(1f)
-                                .align(Alignment.Center)
+                                .shadow(
+                                    elevation = if (fraction < 0.5) {
+                                        ((1 - fraction) * 16).dp
+                                    } else 0.dp,
+                                    clip = false,
+                                    ambientColor = Color(0xffCE5A01).copy(if (fraction < 0.1) 1f - fraction else 0f),
+                                    spotColor = Color(0xffCE5A01).copy(if (fraction < 0.1) 1f - fraction else 0f)
+                                )
+                                .alpha(if (fraction < 0.2) 1f - fraction else 0f)
+                                .fillMaxWidth()
+                                .background(
+                                    color = menuItem.bgColor,
+                                    shape = RoundedCornerShape(
+                                        bottomEnd = 35.dp,
+                                        bottomStart = 35.dp
+                                    )
+                                )
+                                .clip(RoundedCornerShape(bottomEnd = 35.dp, bottomStart = 35.dp))
+                                .height(candidateHeight.dp)
+                                .then(
+                                    Modifier.sharedElement(
+                                        rememberSharedContentState(
+                                            key = "item-container-${menuItemId}"
+                                        ),
+                                        this@AnimatedContent,
+                                    )
+                                )
                         ) {
-                            Box {
-                                Image(
-                                    painter = painterResource(menuItem.imageLink),
-                                    contentDescription = "food image",
+                            Box(modifier = Modifier.fillMaxSize()) {
+                                //bg image and shadow
+                                menuItem.bgImage?.let {
+                                    Image(
+                                        painter = painterResource(it),
+                                        contentDescription = "background image shadow",
+                                        contentScale = ContentScale.FillWidth,
+                                        modifier = Modifier
+                                            .offset {
+                                                backgroundShadowOffset.value
+                                            }.graphicsLayer {
+                                                scaleX = 1.050f
+                                                scaleY = 1.050f
+                                            }.blur(radius = 8.dp),
+                                        colorFilter = ColorFilter.tint(DarkOrange.copy(alpha = 0.3f))
+                                    )
+                                    Image(
+                                        painter = painterResource(it),
+                                        contentDescription = "background image",
+                                        contentScale = ContentScale.FillWidth,
+                                        modifier = Modifier
+                                            .background(
+                                                color = Color.Transparent,
+                                                shape = RoundedCornerShape(
+                                                    bottomEnd = 35.dp,
+                                                    bottomStart = 35.dp
+                                                )
+                                            ).offset {
+                                                backgroundImageOffset.value
+                                            }.graphicsLayer {
+                                                shadowElevation = 8f
+                                                scaleX = 1.050f
+                                                scaleY = 1.050f
+                                            },
+                                        alpha = 1 - fraction
+                                    )
+                                }
+                                Box(
                                     modifier = Modifier
                                         .aspectRatio(1f)
                                         .align(Alignment.Center)
-                                        .windowInsetsPadding(WindowInsets.systemBars)
-                                        .padding(16.dp)
-                                        .rotate(imageRotation.value.toFloat())
-                                        .background(
-                                            color = Color.Transparent,
-                                            shape = CircleShape
+                                ) {
+                                    Box {
+                                        Image(
+                                            painter = painterResource(menuItem.imageLink),
+                                            contentDescription = "food image",
+                                            modifier = Modifier
+                                                .aspectRatio(1f)
+                                                .align(Alignment.Center)
+                                                .windowInsetsPadding(WindowInsets.systemBars)
+                                                .padding(16.dp)
+                                                .rotate(imageRotation.value.toFloat())
+                                                .background(
+                                                    color = Color.Transparent,
+                                                    shape = CircleShape
+                                                )
+                                                .sharedBounds(
+                                                    rememberSharedContentState(key = "item-image-${menuItemId}"),
+                                                    animatedVisibilityScope = this@AnimatedContent,
+                                                    enter = fadeIn(),
+                                                    exit = fadeOut(),
+                                                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                                                )
                                         )
-                                )
+                                    }
+                                }
                             }
                         }
                     }
+                    Ingredients(
+                        menuItem = menuItem,
+                        sharedTransitionScope = sharedTransitionScope,
+                        animatedContentScope = this@AnimatedContent
+                    )
                 }
             }
-            StepsAndDetails(menuItem = menuItem)
-        }
-        Box(
-            modifier = Modifier
-                .windowInsetsPadding(WindowInsets.systemBars)
-                .size(50.dp)
-                .padding(10.dp)
-                .alpha(alpha = if (fraction <= 0) 1f else 0f)
-                .background(color = Color.Black, shape = RoundedCornerShape(50))
-                .shadow(elevation = 16.dp)
-                .padding(5.dp)
-                .clickable {
-                    goBack()
-                }
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                contentDescription = "go back",
-                tint = menuItem.bgColor,
-                modifier = Modifier.size(30.dp)
-            )
+            Box(
+                modifier = Modifier
+                    .windowInsetsPadding(WindowInsets.systemBars)
+                    .size(50.dp)
+                    .padding(10.dp)
+                    .alpha(alpha = if (fraction <= 0) 1f else 0f)
+                    .background(color = Color.Black, shape = RoundedCornerShape(50))
+                    .shadow(elevation = 16.dp)
+                    .padding(5.dp)
+                    .clickable {
+                        goBack()
+                    }
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                    contentDescription = "go back",
+                    tint = Color.White,
+                    modifier = Modifier.size(65.dp)
+                )
+            }
         }
     }
-
 }
+
 
 
 

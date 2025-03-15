@@ -1,5 +1,8 @@
 package org.gbu.restaurant.ui.screens.menu
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -23,10 +26,12 @@ import androidx.compose.ui.Modifier
 import org.gbu.restaurant.data.entity.MenuItem
 import org.gbu.restaurant.viewmodels.MenuViewModel
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MenuPage(
     menuViewModel: MenuViewModel,
-    onClick: (menuItem: MenuItem) -> Unit
+    onClick: (menuItem: MenuItem) -> Unit,
+    sharedTransitionScope: SharedTransitionScope
 ) {
     val items by menuViewModel.items.collectAsState()
     Box(
@@ -45,7 +50,6 @@ fun MenuPage(
             item {
                 Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars))
             }
-
             items(items.size) { item ->
                 val menuItem = items[item]
                 MenuListItemWrapper(
@@ -53,11 +57,11 @@ fun MenuPage(
                     child = {
                         MenuListItem(
                             menuItem = menuItem,
-                            onClick = onClick
+                            onClick = onClick,
+                            sharedTransitionScope = sharedTransitionScope
                         )
                     }
                 )
-
             }
         }
     }
@@ -67,7 +71,6 @@ fun MenuPage(
 private fun LazyGridState.isScrollingUp(): Boolean {
     var previousIndex by remember(this) { mutableStateOf(firstVisibleItemIndex) }
     var previousScrollOffset by remember(this) { mutableStateOf(firstVisibleItemScrollOffset) }
-
     return remember(this) {
         derivedStateOf {
             if (previousIndex != firstVisibleItemIndex) {

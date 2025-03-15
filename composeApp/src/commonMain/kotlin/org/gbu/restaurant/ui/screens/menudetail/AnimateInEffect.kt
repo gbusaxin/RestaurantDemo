@@ -22,7 +22,7 @@ fun AnimateInEffect(
     val offset = remember { Animatable(30f) }
 
     LaunchedEffect(menuItem){
-        delay((intervalStart * 1000).toLong())
+        delay((intervalStart * 800).toLong())
         visibility.animateTo(
             targetValue = 1f,
             animationSpec = tween(
@@ -32,7 +32,7 @@ fun AnimateInEffect(
         )
     }
     LaunchedEffect(menuItem) {
-        delay((intervalStart * 1000).toLong())
+        delay((intervalStart * 800).toLong())
         delay(intervalStart.toLong())
         offset.animateTo(
             targetValue = 0f,

@@ -1,5 +1,11 @@
 package org.gbu.restaurant.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,11 +24,12 @@ import org.gbu.restaurant.decompose.root.RestaurantRootImpl
 import org.gbu.restaurant.ui.composables.BottomNavUI
 import org.gbu.restaurant.ui.screens.menu.MenuPage
 
-@OptIn(ExperimentalDecomposeApi::class)
+@OptIn(ExperimentalDecomposeApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun BottomNavPage(
     bottomNavComponent: BottomNavComponent,
-    onNavigationToMainChild: (child: RestaurantRootImpl.MainNavigationConfig) -> Unit
+    onNavigationToMainChild: (child: RestaurantRootImpl.MainNavigationConfig) -> Unit,
+    sharedTransitionScope: SharedTransitionScope
 ) {
     val configs = bottomNavComponent.configs
     val pages by bottomNavComponent.pages.subscribeAsState()
@@ -32,7 +39,6 @@ fun BottomNavPage(
     LaunchedEffect(currentPageIndex) {
         pagerState.scrollToPage(currentPageIndex)
     }
-
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -45,14 +51,18 @@ fun BottomNavPage(
             state = pagerState,
             userScrollEnabled = false
         ) {
-
             when (val page = pages.items[it].instance) {
                 is BottomNavComponent.BottomNavChild.Menu -> {
                     MenuPage(
                         menuViewModel = page.component.menuViewModel,
-                        onClick = {
-                            onNavigationToMainChild(RestaurantRootImpl.MainNavigationConfig.MenuDetail(it.id))
-                        }
+                        onClick = { menuItem ->
+                            onNavigationToMainChild(
+                                RestaurantRootImpl.MainNavigationConfig.MenuDetail(
+                                    menuItem.id
+                                )
+                            )
+                        },
+                        sharedTransitionScope = sharedTransitionScope
                     )
                 }
 

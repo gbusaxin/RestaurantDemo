@@ -1,5 +1,14 @@
 package org.gbu.restaurant
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,9 +19,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.StackAnimation
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.moriatsushi.insetsx.SystemBarsBehavior
 import com.moriatsushi.insetsx.rememberWindowInsetsController
@@ -29,6 +41,7 @@ import org.gbu.restaurant.ui.screens.SplashPage
 import org.gbu.restaurant.ui.screens.menudetail.MenuDetailsPage
 import org.gbu.restaurant.viewmodels.LocalUser
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RestaurantApplication(
     root: RestaurantRoot,
@@ -51,87 +64,92 @@ fun RestaurantApplication(
             LocalKoinApplication provides root.koinApplication,
             LocalUser provides user
         ) {
-            val stack by root.backstack.subscribeAsState()
-            val current = stack.active.instance
+            SharedTransitionLayout {
+                val sharedTransitionScope = this
+                val stack by root.backstack.subscribeAsState()
+                val current = stack.active.instance
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Children(
-                    stack = stack,
-                    modifier = Modifier.weight(1f)
-                ) { childCreated ->
-                    when (val child = childCreated.instance) {
-                        is RestaurantRoot.MainDestinationChild.Splash -> {
-                            SplashPage(
-                                viewModel = child.component.viewModel,
-                                onSplashFinished = { onBoardedBefore ->
-                                    child.component.onSplashTimeFinish(
-                                        isOnBoardedBefore = onBoardedBefore
-                                    )
-                                }
-                            )
-                        }
-
-                        is RestaurantRoot.MainDestinationChild.OnBoarding -> {
-                            OnBoardingPage(onGetStarted = { child.component.onBoarded() })
-                        }
-
-                        is RestaurantRoot.MainDestinationChild.SignInOptions -> {
-                            SignInOptionsPage(
-                                onCreateAccount = { child.component.onCreateAccountClicked() },
-                                onSignInAccount = { child.component.onSignInToAccountClicked() }
-                            )
-                        }
-
-                        is RestaurantRoot.MainDestinationChild.Login -> {
-                            LoginPage(
-                                viewModel = child.component.loginViewModel,
-                                onUserAuthenticated = { user, rememberMe ->
-                                    child.component.onAuthenticationSuccess(
-                                        user = user,
-                                        rememberMe = rememberMe
-                                    )
-                                }
-                            )
-                        }
-
-                        is RestaurantRoot.MainDestinationChild.ContactInfo -> {
-                            ContactPage(
-                                viewModel = child.component.contactsViewModel
-                            ) {
-                                child.component.onOtpSent()
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.surface),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Children(
+                        stack = stack,
+                        modifier = Modifier.weight(1f)
+                    ) { childCreated ->
+                        when (val child = childCreated.instance) {
+                            is RestaurantRoot.MainDestinationChild.Splash -> {
+                                SplashPage(
+                                    viewModel = child.component.viewModel,
+                                    onSplashFinished = { onBoardedBefore ->
+                                        child.component.onSplashTimeFinish(
+                                            isOnBoardedBefore = onBoardedBefore
+                                        )
+                                    }
+                                )
                             }
-                        }
 
-                        is RestaurantRoot.MainDestinationChild.PhoneVerification -> {
-                            PhoneVerificationPage(
-                                viewModel = child.component.verifyPhoneViewModel
-                            ) {
-                                child.component.onVerificationCompleted()
+                            is RestaurantRoot.MainDestinationChild.OnBoarding -> {
+                                OnBoardingPage(onGetStarted = { child.component.onBoarded() })
                             }
-                        }
 
-                        is RestaurantRoot.MainDestinationChild.BottomNavHolder -> {
-                            BottomNavPage(
-                                bottomNavComponent = child.component,
-                                onNavigationToMainChild = {
-                                    child.component.onNavigationToMainChild(it)
+                            is RestaurantRoot.MainDestinationChild.SignInOptions -> {
+                                SignInOptionsPage(
+                                    onCreateAccount = { child.component.onCreateAccountClicked() },
+                                    onSignInAccount = { child.component.onSignInToAccountClicked() }
+                                )
+                            }
+
+                            is RestaurantRoot.MainDestinationChild.Login -> {
+                                LoginPage(
+                                    viewModel = child.component.loginViewModel,
+                                    onUserAuthenticated = { user, rememberMe ->
+                                        child.component.onAuthenticationSuccess(
+                                            user = user,
+                                            rememberMe = rememberMe
+                                        )
+                                    }
+                                )
+                            }
+
+                            is RestaurantRoot.MainDestinationChild.ContactInfo -> {
+                                ContactPage(
+                                    viewModel = child.component.contactsViewModel
+                                ) {
+                                    child.component.onOtpSent()
                                 }
-                            )
-                        }
+                            }
 
-                        is RestaurantRoot.MainDestinationChild.MenuDetail -> {
-                            MenuDetailsPage(
-                                goBack = { child.component.onBack() },
-                                sensorManager = sensorManager,
-                                menuItemId = child.component.menuItemId,
-                                viewModel = child.component.viewModel
-                            )
+                            is RestaurantRoot.MainDestinationChild.PhoneVerification -> {
+                                PhoneVerificationPage(
+                                    viewModel = child.component.verifyPhoneViewModel
+                                ) {
+                                    child.component.onVerificationCompleted()
+                                }
+                            }
+
+                            is RestaurantRoot.MainDestinationChild.BottomNavHolder -> {
+                                BottomNavPage(
+                                    bottomNavComponent = child.component,
+                                    onNavigationToMainChild = {
+                                        child.component.onNavigationToMainChild(it)
+                                    },
+                                    sharedTransitionScope = sharedTransitionScope
+                                )
+                            }
+
+                            is RestaurantRoot.MainDestinationChild.MenuDetail -> {
+                                MenuDetailsPage(
+                                    goBack = { child.component.onBack() },
+                                    sensorManager = sensorManager,
+                                    menuItemId = child.component.menuItemId,
+                                    viewModel = child.component.viewModel,
+                                    sharedTransitionScope = sharedTransitionScope
+                                )
+                            }
                         }
                     }
                 }
