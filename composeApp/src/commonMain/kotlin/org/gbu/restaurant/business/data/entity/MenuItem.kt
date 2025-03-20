@@ -40,7 +40,7 @@ data class MenuItem(
                         Ingredient("Cheese"),
                     ),
                     Color.Yellow,
-                    price = "12.50 €"
+                    price = "12.50"
                 ),
                 MenuItem(
                     2,
@@ -55,7 +55,7 @@ data class MenuItem(
                         Ingredient("Olive oil"),
                     ),
                     Color.LightGray,
-                    price = "15.99 €"
+                    price = "15.99"
                 ),
                 MenuItem(
                     3,
@@ -70,7 +70,7 @@ data class MenuItem(
                         Ingredient("Olive oil"),
                     ),
                     Color.Red,
-                    price = "8 €"
+                    price = "8"
                 ),
                 MenuItem(
                     4,
@@ -85,7 +85,7 @@ data class MenuItem(
                         Ingredient("Olive oil"),
                     ),
                     Color.Green,
-                    price = "14 €"
+                    price = "14"
                 ),
                 MenuItem(
                     5,
@@ -100,7 +100,7 @@ data class MenuItem(
                         Ingredient("Olive oil"),
                     ),
                     Color.Yellow,
-                    price = "17 €"
+                    price = "17"
                 ),
                 MenuItem(
                     6,
@@ -115,7 +115,7 @@ data class MenuItem(
                         Ingredient("Olive oil"),
                     ),
                     Color.Blue,
-                    price = "19 €"
+                    price = "19"
                 ),
             )
         }

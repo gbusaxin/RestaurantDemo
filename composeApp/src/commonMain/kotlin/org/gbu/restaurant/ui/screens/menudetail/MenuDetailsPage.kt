@@ -59,6 +59,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.flow.Flow
 import org.gbu.restaurant.DarkOrange
+import org.gbu.restaurant.business.constants.CurrencyConstants
 import org.gbu.restaurant.business.core.UIComponent
 import org.gbu.restaurant.business.data.entity.MenuItem
 import org.gbu.restaurant.ui.composables.DefaultScreenUI
@@ -321,7 +322,7 @@ private fun AddToCartButton(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = menuItem.price,
+                text = "${menuItem.price} ${CurrencyConstants.CURRENCY}",
                 fontSize = 20.sp,
                 color = Color.Black,
                 modifier = Modifier.padding(end = 8.dp)

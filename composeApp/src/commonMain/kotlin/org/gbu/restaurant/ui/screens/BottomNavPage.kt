@@ -1,11 +1,7 @@
 package org.gbu.restaurant.ui.screens
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +18,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import org.gbu.restaurant.decompose.bottomnavholder.BottomNavComponent
 import org.gbu.restaurant.decompose.root.RestaurantRootImpl
 import org.gbu.restaurant.ui.composables.BottomNavUI
+import org.gbu.restaurant.ui.screens.cart.CartPage
 import org.gbu.restaurant.ui.screens.menu.MenuPage
 
 @OptIn(ExperimentalDecomposeApi::class, ExperimentalSharedTransitionApi::class)
@@ -63,6 +60,17 @@ fun BottomNavPage(
                             )
                         },
                         sharedTransitionScope = sharedTransitionScope
+                    )
+                }
+
+                is BottomNavComponent.BottomNavChild.Cart -> {
+                    val viewModel = page.component.cartViewModel
+                    CartPage(
+                        state = viewModel.state.value,
+                        events = viewModel::onTriggerEvent,
+                        errors = viewModel.errors,
+                        navigateToDetail = { page.component.onClickToDetail(it) },
+                        navigateToCheckout = { page.component.onClickToCheckout() }
                     )
                 }
 

@@ -13,6 +13,7 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.gbu.restaurant.decompose.cart.CartComponentImpl
 import org.gbu.restaurant.decompose.menu.MenuComponentImpl
 import org.gbu.restaurant.decompose.root.RestaurantRootImpl
 import org.jetbrains.compose.resources.DrawableResource
@@ -36,8 +37,8 @@ class BottomNavComponentImpl(
 ) : BottomNavComponent, ComponentContext by componentContext {
 
     override val configs = listOf(
-        BottomNavConfig.Menu
-//        BottomNavConfig.Cart,
+        BottomNavConfig.Menu,
+        BottomNavConfig.Cart,
 //        BottomNavConfig.Delivery,
 //        BottomNavConfig.Profile,
 //        BottomNavConfig.Other, TODO()
@@ -79,7 +80,9 @@ class BottomNavComponentImpl(
                 component = buildMenuComponent(componentContext)
             )
 //            is BottomNavConfig.Delivery ->
-//            is BottomNavConfig.Cart ->
+            is BottomNavConfig.Cart -> BottomNavComponent.BottomNavChild.Cart(
+                component = buildCartComponent(componentContext)
+            )
 //            is BottomNavConfig.Profile ->
 //            is BottomNavConfig.Other ->
             else -> TODO()
@@ -89,7 +92,17 @@ class BottomNavComponentImpl(
     private fun buildMenuComponent(context: ComponentContext) = MenuComponentImpl(
         componentContext = context,
         onMenuDetail = {
-            onNavigationToMainChild(RestaurantRootImpl.MainNavigationConfig.MenuDetail(it.id)) // TODO test below
+            onNavigationToMainChild(RestaurantRootImpl.MainNavigationConfig.MenuDetail(it.id))
+        }
+    )
+
+    private fun buildCartComponent(context: ComponentContext) = CartComponentImpl(
+        componentContext = context,
+        clickToDetail = {
+            onNavigationToMainChild(RestaurantRootImpl.MainNavigationConfig.MenuDetail(it))
+        },
+        clickToCheckout = {
+            TODO()
         }
     )
 
