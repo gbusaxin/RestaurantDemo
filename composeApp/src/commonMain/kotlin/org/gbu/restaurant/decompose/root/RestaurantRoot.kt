@@ -2,7 +2,9 @@ package org.gbu.restaurant.decompose.root
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import org.gbu.restaurant.decompose.address.AddressComponent
 import org.gbu.restaurant.decompose.bottomnavholder.BottomNavComponent
+import org.gbu.restaurant.decompose.checkout.CheckoutComponent
 import org.gbu.restaurant.decompose.contactsinfo.ContactInfoComponent
 import org.gbu.restaurant.decompose.login.LoginComponent
 import org.gbu.restaurant.decompose.menudetail.MenuDetailComponent
@@ -35,7 +37,11 @@ interface RestaurantRoot {
 
         class BottomNavHolder(val component: BottomNavComponent) : MainDestinationChild()
 
-        class MenuDetail(val component: MenuDetailComponent): MainDestinationChild()
+        class MenuDetail(val component: MenuDetailComponent) : MainDestinationChild()
+
+        class Checkout(val component: CheckoutComponent) : MainDestinationChild()
+
+        class Address(val component: AddressComponent): MainDestinationChild()
     }
 
 }

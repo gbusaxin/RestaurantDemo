@@ -18,9 +18,8 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.moriatsushi.insetsx.SystemBarsBehavior
 import com.moriatsushi.insetsx.rememberWindowInsetsController
-import org.gbu.restaurant.decompose.root.RestaurantRoot
 import org.gbu.restaurant.business.di.LocalKoinApplication
-import org.gbu.restaurant.ui.sensor.SensorManager
+import org.gbu.restaurant.decompose.root.RestaurantRoot
 import org.gbu.restaurant.ui.screens.BottomNavPage
 import org.gbu.restaurant.ui.screens.ContactPage
 import org.gbu.restaurant.ui.screens.LoginPage
@@ -28,8 +27,11 @@ import org.gbu.restaurant.ui.screens.OnBoardingPage
 import org.gbu.restaurant.ui.screens.PhoneVerificationPage
 import org.gbu.restaurant.ui.screens.SignInOptionsPage
 import org.gbu.restaurant.ui.screens.SplashPage
+import org.gbu.restaurant.ui.screens.address.AddressPage
+import org.gbu.restaurant.ui.screens.checkout.CheckoutPage
 import org.gbu.restaurant.ui.screens.menudetail.MenuDetailsPage
 import org.gbu.restaurant.ui.screens.menudetail.viewmodel.MenuDetailEvent
+import org.gbu.restaurant.ui.sensor.SensorManager
 import org.gbu.restaurant.viewmodels.LocalUser
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -135,7 +137,7 @@ fun RestaurantApplication(
                             is RestaurantRoot.MainDestinationChild.MenuDetail -> {
                                 val viewModel = child.component.viewModel
                                 val id = child.component.menuItemId
-                                LaunchedEffect(id){
+                                LaunchedEffect(id) {
                                     viewModel.onTriggerEvent(MenuDetailEvent.GetMenuItem(id))
                                 }
                                 MenuDetailsPage(
@@ -146,6 +148,29 @@ fun RestaurantApplication(
                                     sensorManager = sensorManager,
                                     sharedTransitionScope = sharedTransitionScope,
                                     onAddToCart = { /*child.component.onAddToCart()*/ }
+                                )
+                            }
+
+                            is RestaurantRoot.MainDestinationChild.Checkout -> {
+                                val viewModel = child.component.viewModel
+                                CheckoutPage(
+                                    errors = viewModel.errors,
+                                    action = viewModel.action,
+                                    state = viewModel.state.value,
+                                    events = viewModel::onTriggerEvent,
+                                    navigateToAddress = { child.component.navigateToAddress() },
+                                    popUp = { child.component.popUp() }
+                                )
+                            }
+
+                            is RestaurantRoot.MainDestinationChild.Address -> {
+                                val viewModel = child.component.viewModel
+                                AddressPage(
+                                    state = viewModel.state.value,
+                                    errors = viewModel.errors,
+                                    events = viewModel::onTriggerEvent,
+                                    navigateToAddAddress = { child.component.navigateToAddAddress() },
+                                    popUp = { child.component.popUp() }
                                 )
                             }
                         }

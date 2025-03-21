@@ -2,7 +2,6 @@ package org.gbu.restaurant.decompose.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
@@ -14,7 +13,9 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.gbu.restaurant.decompose.address.AddressComponentImpl
 import org.gbu.restaurant.decompose.bottomnavholder.BottomNavComponentImpl
+import org.gbu.restaurant.decompose.checkout.CheckoutComponentImpl
 import org.gbu.restaurant.decompose.contactsinfo.ContactInfoComponentImpl
 import org.gbu.restaurant.decompose.login.LoginComponentImpl
 import org.gbu.restaurant.decompose.menudetail.MenuDetailComponentImpl
@@ -84,10 +85,33 @@ class RestaurantRootImpl(
                 component = buildMenuDetailComponent(componentContext, config.menuItemId)
             )
 
-            else -> TODO()
+            is MainNavigationConfig.Checkout -> RestaurantRoot.MainDestinationChild.Checkout(
+                component = buildCheckoutComponent(componentContext)
+            )
+
+            is MainNavigationConfig.Address -> RestaurantRoot.MainDestinationChild.Address(
+                component = buildAddressComponent(componentContext)
+            )
         }
     }
 
+    private fun buildAddressComponent(context: ComponentContext) = AddressComponentImpl(
+        componentContext = context, onNavigateToAddAddress = {
+            mainDispatcher.launch {
+//                navigation.push(TODO())
+            }
+        }, onPopUp = { mainDispatcher.launch { navigation.pop() } }
+    )
+
+    private fun buildCheckoutComponent(context: ComponentContext) = CheckoutComponentImpl(
+        componentContext = context,
+        onPopUp = { mainDispatcher.launch { navigation.pop() } },
+        onNavigateToAddress = {
+            mainDispatcher.launch {
+                navigation.push(configuration = MainNavigationConfig.Address)
+            }
+        }
+    )
 
     private fun buildSplashComponent(
         context: ComponentContext
@@ -206,6 +230,12 @@ class RestaurantRootImpl(
 
         @Parcelize
         data class MenuDetail(val menuItemId: Long) : MainNavigationConfig()
+
+        @Parcelize
+        data object Checkout : MainNavigationConfig()
+
+        @Parcelize
+        data object Address : MainNavigationConfig()
     }
 
 }

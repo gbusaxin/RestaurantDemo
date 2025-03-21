@@ -60,9 +60,9 @@ fun DefaultScreenUI(
         topBar = {
             if (titleToolbar != null) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(start = 13.dp, top = 45.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     if (startIconToolbar != null) {
                         CircleButton(

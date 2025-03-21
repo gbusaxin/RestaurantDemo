@@ -25,14 +25,24 @@
 
     <string name="menu">Menu</string>
     <string name="delivery">Delivery</string>
+    <string name="delivery_address">Delivery address</string>
+    <string name="choose_delivery_type">Choose delivery type</string>
+    <string name="delivery_cost">Delivery cost</string>
     <string name="cart">Cart</string>
     <string name="profile">Profile</string>
     <string name="other">Other</string>
+    <string name="home">Home</string>
+    <string name="delete">Delete</string>
+    <string name="submit">Submit</string>
+    <string name="change">Change</string>
+    <string name="address">Address</string>
+    <string name="no_address">No address</string>
 
     <string name="no_wifi_error">You are currently offline, please reconnect and try again.</string>
     <string name="try_again">Try Again</string>
     <string name="total_cost">Total cost: </string>
     <string name="proceed_to_checkout">Proceed to checkout</string>
+    <string name="back_to_checkout">Back to checkout</string>
     <string name="cart_is_empty">Cart is empty...</string>
 
 </resources>

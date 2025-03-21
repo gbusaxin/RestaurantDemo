@@ -102,7 +102,7 @@ class BottomNavComponentImpl(
             onNavigationToMainChild(RestaurantRootImpl.MainNavigationConfig.MenuDetail(it))
         },
         clickToCheckout = {
-            TODO()
+            onNavigationToMainChild(RestaurantRootImpl.MainNavigationConfig.Checkout)
         }
     )
 

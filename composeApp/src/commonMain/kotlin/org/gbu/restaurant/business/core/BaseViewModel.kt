@@ -33,7 +33,7 @@ abstract class BaseViewModel<
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
 
     private val _action: Channel<SingleAction> = Channel()
-    val action = _action
+    val action = _action.receiveAsFlow()
 
     private val _errors: Channel<UIComponent> = Channel()
     val errors = _errors.receiveAsFlow()
