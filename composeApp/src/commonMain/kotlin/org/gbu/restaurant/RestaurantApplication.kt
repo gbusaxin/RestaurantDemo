@@ -18,6 +18,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.moriatsushi.insetsx.SystemBarsBehavior
 import com.moriatsushi.insetsx.rememberWindowInsetsController
+import org.gbu.restaurant.business.common.Context
 import org.gbu.restaurant.business.di.LocalKoinApplication
 import org.gbu.restaurant.decompose.root.RestaurantRoot
 import org.gbu.restaurant.ui.screens.BottomNavPage
@@ -27,18 +28,24 @@ import org.gbu.restaurant.ui.screens.OnBoardingPage
 import org.gbu.restaurant.ui.screens.PhoneVerificationPage
 import org.gbu.restaurant.ui.screens.SignInOptionsPage
 import org.gbu.restaurant.ui.screens.SplashPage
+import org.gbu.restaurant.ui.screens.add_address.AddAddressInfoPage
+import org.gbu.restaurant.ui.screens.add_address.AddAddressPage
+import org.gbu.restaurant.ui.screens.add_address.viewmodel.AddAddressViewModel
 import org.gbu.restaurant.ui.screens.address.AddressPage
 import org.gbu.restaurant.ui.screens.checkout.CheckoutPage
-import org.gbu.restaurant.ui.screens.menudetail.MenuDetailsPage
-import org.gbu.restaurant.ui.screens.menudetail.viewmodel.MenuDetailEvent
+import org.gbu.restaurant.ui.screens.menu_detail.MenuDetailsPage
+import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailEvent
 import org.gbu.restaurant.ui.sensor.SensorManager
 import org.gbu.restaurant.viewmodels.LocalUser
+
+lateinit var addAddressViewModel: AddAddressViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RestaurantApplication(
     root: RestaurantRoot,
     sensorManager: SensorManager?,
+    context: Context
 ) {
 
     val windowsInsets = rememberWindowInsetsController()
@@ -170,6 +177,29 @@ fun RestaurantApplication(
                                     errors = viewModel.errors,
                                     events = viewModel::onTriggerEvent,
                                     navigateToAddAddress = { child.component.navigateToAddAddress() },
+                                    popUp = { child.component.popUp() }
+                                )
+                            }
+
+                            is RestaurantRoot.MainDestinationChild.AddAddress -> {
+                                addAddressViewModel = child.component.viewModel
+                                AddAddressPage(
+                                    context = context,
+                                    state = addAddressViewModel.state.value,
+                                    errors = addAddressViewModel.errors,
+                                    action = addAddressViewModel.action,
+                                    events = addAddressViewModel::onTriggerEvent,
+                                    navigationToAddInformation = { child.component.addAddressInformation() },
+                                    popUp = { child.component.popUp() }
+                                )
+                            }
+
+                            is RestaurantRoot.MainDestinationChild.AddAddressInfo -> {
+                                AddAddressInfoPage(
+                                    state = addAddressViewModel.state.value,
+                                    errors = addAddressViewModel.errors,
+                                    action = addAddressViewModel.action,
+                                    events = addAddressViewModel::onTriggerEvent,
                                     popUp = { child.component.popUp() }
                                 )
                             }

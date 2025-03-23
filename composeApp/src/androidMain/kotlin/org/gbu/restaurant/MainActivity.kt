@@ -7,8 +7,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
 import com.arkivanov.decompose.defaultComponentContext
-import org.gbu.restaurant.decompose.root.RestaurantRootImpl
 import org.gbu.restaurant.business.di.initKoinApp
+import org.gbu.restaurant.decompose.root.RestaurantRootImpl
 import org.koin.dsl.module
 
 class MainActivity : ComponentActivity() {
@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            MainView(root = root)
+            MainView(root = root, appContext = application)
         }
     }
 }

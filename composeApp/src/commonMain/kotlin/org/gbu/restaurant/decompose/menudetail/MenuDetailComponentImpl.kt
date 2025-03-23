@@ -1,7 +1,7 @@
 package org.gbu.restaurant.decompose.menudetail
 
 import com.arkivanov.decompose.ComponentContext
-import org.gbu.restaurant.ui.screens.menudetail.viewmodel.MenuDetailsViewModel
+import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailsViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

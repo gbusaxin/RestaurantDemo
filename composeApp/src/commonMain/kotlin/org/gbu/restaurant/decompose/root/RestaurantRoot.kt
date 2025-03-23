@@ -2,6 +2,8 @@ package org.gbu.restaurant.decompose.root
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import org.gbu.restaurant.decompose.add_address.AddAddressComponent
+import org.gbu.restaurant.decompose.add_address.AddAddressInfoComponent
 import org.gbu.restaurant.decompose.address.AddressComponent
 import org.gbu.restaurant.decompose.bottomnavholder.BottomNavComponent
 import org.gbu.restaurant.decompose.checkout.CheckoutComponent
@@ -42,6 +44,10 @@ interface RestaurantRoot {
         class Checkout(val component: CheckoutComponent) : MainDestinationChild()
 
         class Address(val component: AddressComponent): MainDestinationChild()
+
+        class AddAddress(val component: AddAddressComponent) : MainDestinationChild()
+
+        class AddAddressInfo(val component: AddAddressInfoComponent): MainDestinationChild()
     }
 
 }

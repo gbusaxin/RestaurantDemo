@@ -13,6 +13,8 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.gbu.restaurant.decompose.add_address.AddAddressComponentImpl
+import org.gbu.restaurant.decompose.add_address.AddAddressInfoComponentImpl
 import org.gbu.restaurant.decompose.address.AddressComponentImpl
 import org.gbu.restaurant.decompose.bottomnavholder.BottomNavComponentImpl
 import org.gbu.restaurant.decompose.checkout.CheckoutComponentImpl
@@ -92,13 +94,33 @@ class RestaurantRootImpl(
             is MainNavigationConfig.Address -> RestaurantRoot.MainDestinationChild.Address(
                 component = buildAddressComponent(componentContext)
             )
+
+            is MainNavigationConfig.AddAddress -> RestaurantRoot.MainDestinationChild.AddAddress(
+                component = buildAddAddressComponent(componentContext)
+            )
+
+            is MainNavigationConfig.AddAddressInfo -> RestaurantRoot.MainDestinationChild.AddAddressInfo(
+                component = buildAddAddressInfoComponent(componentContext)
+            )
         }
     }
+
+    private fun buildAddAddressInfoComponent(context: ComponentContext) =
+        AddAddressInfoComponentImpl(
+            componentContext = context,
+            onPopUp = { mainDispatcher.launch { navigation.pop() } }
+        )
+
+    private fun buildAddAddressComponent(context: ComponentContext) = AddAddressComponentImpl(
+        componentContext = context,
+        onAddAddressInformation = { mainDispatcher.launch { navigation.push(MainNavigationConfig.AddAddressInfo) } },
+        onPopUp = { mainDispatcher.launch { navigation.pop() } }
+    )
 
     private fun buildAddressComponent(context: ComponentContext) = AddressComponentImpl(
         componentContext = context, onNavigateToAddAddress = {
             mainDispatcher.launch {
-//                navigation.push(TODO())
+                navigation.push(configuration = MainNavigationConfig.AddAddress)
             }
         }, onPopUp = { mainDispatcher.launch { navigation.pop() } }
     )
@@ -236,6 +258,12 @@ class RestaurantRootImpl(
 
         @Parcelize
         data object Address : MainNavigationConfig()
+
+        @Parcelize
+        data object AddAddress : MainNavigationConfig()
+
+        @Parcelize
+        data object AddAddressInfo : MainNavigationConfig()
     }
 
 }

@@ -31,6 +31,11 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+
+
+            implementation("com.google.android.gms:play-services-location:21.3.0")
+            implementation("com.google.android.gms:play-services-maps:19.1.0")
+            implementation("com.google.android.gms:play-services-maps:19.1.0")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -60,6 +65,11 @@ kotlin {
 
             // InsetX for controlling status bar and navigation bar
             implementation("com.moriatsushi.insetsx:insetsx:0.1.0-alpha10")
+
+            implementation("com.google.maps.android:maps-compose:6.1.0")
+
+            implementation("com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha")
+            implementation("com.google.accompanist:accompanist-permissions:0.32.0")
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.gbu.restaurant.ui.screens.menudetail
+package org.gbu.restaurant.ui.screens.menu_detail
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi

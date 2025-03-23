@@ -1,4 +1,4 @@
-package org.gbu.restaurant.ui.screens.menudetail
+package org.gbu.restaurant.ui.screens.menu_detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

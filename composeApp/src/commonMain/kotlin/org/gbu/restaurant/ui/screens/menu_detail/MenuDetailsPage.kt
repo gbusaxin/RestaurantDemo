@@ -1,4 +1,4 @@
-package org.gbu.restaurant.ui.screens.menudetail
+package org.gbu.restaurant.ui.screens.menu_detail
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -63,9 +63,8 @@ import org.gbu.restaurant.business.constants.CurrencyConstants
 import org.gbu.restaurant.business.core.UIComponent
 import org.gbu.restaurant.business.data.entity.MenuItem
 import org.gbu.restaurant.ui.composables.DefaultScreenUI
-import org.gbu.restaurant.ui.screens.menudetail.viewmodel.MenuDetailEvent
-import org.gbu.restaurant.ui.screens.menudetail.viewmodel.MenuDetailState
-import org.gbu.restaurant.ui.screens.menudetail.viewmodel.MenuDetailsViewModel
+import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailEvent
+import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailState
 import org.gbu.restaurant.ui.sensor.Listener
 import org.gbu.restaurant.ui.sensor.SensorData
 import org.gbu.restaurant.ui.sensor.SensorManager

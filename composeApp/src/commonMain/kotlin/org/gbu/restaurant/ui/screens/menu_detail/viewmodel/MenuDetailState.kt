@@ -1,4 +1,4 @@
-package org.gbu.restaurant.ui.screens.menudetail.viewmodel
+package org.gbu.restaurant.ui.screens.menu_detail.viewmodel
 
 import androidx.compose.ui.graphics.Color
 import org.gbu.restaurant.business.core.NetworkState

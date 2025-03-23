@@ -8,12 +8,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
+import org.gbu.restaurant.business.common.Context
 import org.gbu.restaurant.decompose.root.RestaurantRoot
 import org.gbu.restaurant.sensor.SensorDataManager
 import org.gbu.restaurant.sensor.SensorManagerImpl
 
 @Composable
-fun MainView(root: RestaurantRoot) {
+fun MainView(root: RestaurantRoot, appContext: Context) {
 
     val sensorManager = SensorManagerImpl()
 
@@ -37,5 +38,5 @@ fun MainView(root: RestaurantRoot) {
         }
     }
 
-    RestaurantApplication(root = root, sensorManager = sensorManager)
+    RestaurantApplication(root = root, sensorManager = sensorManager, context = appContext)
 }

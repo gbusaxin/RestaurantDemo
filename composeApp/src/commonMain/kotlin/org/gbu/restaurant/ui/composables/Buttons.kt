@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
@@ -126,6 +128,30 @@ fun DefaultButton(
         Text(
             text = text,
             style = style
+        )
+    }
+}
+
+@Composable
+fun IconButton(
+    modifier: Modifier = Modifier,
+    style: TextStyle = MaterialTheme.typography.bodyLarge,
+    shape: Shape = MaterialTheme.shapes.extraLarge,
+    icon: ImageVector,
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(),
+        shape = shape,
+        onClick = onClick
+    ) {
+        Icon(icon, null, tint = MaterialTheme.colorScheme.background)
+        Spacer(Modifier.height(4.dp))
+        Text(
+            text = text,
+            style = style,
         )
     }
 }
