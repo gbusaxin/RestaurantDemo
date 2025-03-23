@@ -1,18 +1,53 @@
+# IntelliJ IDEA / Android Studio
 *.iml
-.kotlin
-.gradle
-**/build/
-xcuserdata
+.idea/
+.gradle/
+.kotlinc/
+.kotlin/
+build/
 !src/**/build/
-local.properties
-.idea
+captures/
 .DS_Store
-captures
-.externalNativeBuild
-.cxx
-*.xcodeproj/*
-!*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
-!*.xcodeproj/project.xcworkspace/
-!*.xcworkspace/contents.xcworkspacedata
-**/xcshareddata/WorkspaceSettings.xcsettings
+
+# Kotlin/Native & Multiplatform
+.cxx/
+.externalNativeBuild/
+*.konan/
+*.klib/
+*.ktsc/
+.kmm-cache/
+
+# Android
+*.apk
+*.ap_
+*.aab
+*.dex
+*.so
+*.o
+*.hprof
+*.jar
+*.keystore
+*.map
+*.hprof
+
+# iOS / Xcode
+iosApp/Pods/
+iosApp/DerivedData/
+iosApp/*.xcodeproj/*
+!iosApp/*.xcodeproj/project.pbxproj
+!iosApp/*.xcodeproj/xcshareddata/
+!iosApp/*.xcodeproj/project.xcworkspace/
+!iosApp/*.xcworkspace/contents.xcworkspacedata
+iosApp/**/xcshareddata/WorkspaceSettings.xcsettings
+
+# Gradle
+gradle/
+gradle.properties
+gradlew
+gradlew.bat
+local.properties
+
+# Misc
+*.log
+*.tmp
+*.lock
