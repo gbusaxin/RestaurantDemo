@@ -41,11 +41,11 @@ iosApp/*.xcodeproj/*
 iosApp/**/xcshareddata/WorkspaceSettings.xcsettings
 
 # Gradle
-gradle/
-gradle.properties
-gradlew
-gradlew.bat
-local.properties
+#gradle/
+#gradle.properties
+#gradlew
+#gradlew.bat
+#local.properties
 
 # Misc
 *.log
