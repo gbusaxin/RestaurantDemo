@@ -23,6 +23,8 @@ interface RestaurantRoot {
     val koinApplication: KoinApplication
     val rootViewModel: RootViewModel
 
+    fun handleInvalidToken()
+
     sealed class MainDestinationChild {
         class Splash(val component: SplashComponent) : MainDestinationChild()
 

@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
                     single<Context> { applicationContext }
                     single<Activity> { this@MainActivity }
                 }
-            )
+            ), context = application
         )
         val root = RestaurantRootImpl(
             componentContext = defaultComponentContext(),

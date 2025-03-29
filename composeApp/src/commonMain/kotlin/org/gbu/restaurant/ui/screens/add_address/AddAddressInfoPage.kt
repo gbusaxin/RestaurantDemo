@@ -48,7 +48,6 @@ fun AddAddressInfoPage(
     events: (AddAddressEvent) -> Unit,
     popUp: () -> Unit
 ) {
-    println("addAddInfo ${state}")
     LaunchedEffect(key1 = action) {
         action.onEach { effect ->
             when (effect) {

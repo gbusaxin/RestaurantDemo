@@ -24,6 +24,8 @@ interface BottomNavComponent {
 
         data class Cart(val component: CartComponent) : BottomNavChild
 
+//        data class AboutUs(val component: ) // TODO()
+
 //        data class Profile(val component: ProfileComponent) : BottomNavChild
 
 //        data class Other(val component: OtherComponent) : BottomNavChild

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
     <string name="app_name">Restaurant DEMO</string>
+    <string name="app_description">This is DEMO application. This application is created to demonstrate the capabilities and functionality, all menu items, texts, images can be changed depending on your wishes. Also, the application can be changed according to your wishes, for example, to demonstrate your product or services. To contact me, please contact the contacts listed below</string>
+    <string name="app_discover">Discover this app to see all functionality</string>
+    <string name="app_enjoy">Enjoy this App</string>
     <string name="on_boarding_title">Welcome to Restaurant application</string>
     <string name="on_boarding_message">The best food and service right here and right now</string>
     <string name="get_started">Get started</string>

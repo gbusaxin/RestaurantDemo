@@ -1,4 +1,4 @@
-package org.gbu.restaurant.ui.screens
+package org.gbu.restaurant.ui.screens.on_boarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,12 +14,19 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
+import org.gbu.restaurant.business.core.UIComponent
+import org.gbu.restaurant.ui.screens.on_boarding.viewmodel.OnBoardingAction
+import org.gbu.restaurant.ui.screens.on_boarding.viewmodel.OnBoardingEvent
+import org.gbu.restaurant.ui.screens.on_boarding.viewmodel.OnBoardingState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import restaurantdemo.composeapp.generated.resources.Res
@@ -29,8 +36,22 @@ import restaurantdemo.composeapp.generated.resources.on_boarding_message
 import restaurantdemo.composeapp.generated.resources.on_boarding_title
 
 @Composable
-fun OnBoardingPage(onGetStarted: () -> Unit) {
-
+fun OnBoardingPage(
+    state: OnBoardingState,
+    errors: Flow<UIComponent>,
+    action: Flow<OnBoardingAction>,
+    events: (OnBoardingEvent) -> Unit,
+    onGetStarted: () -> Unit
+) {
+    LaunchedEffect(key1 = action) {
+        action.onEach { effect ->
+            when (effect) {
+                OnBoardingAction.Navigation.NavigateToSignInOptions -> {
+                    onGetStarted()
+                }
+            }
+        }.collect {}
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -76,13 +97,13 @@ fun OnBoardingPage(onGetStarted: () -> Unit) {
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
-                onClick = onGetStarted,
+                onClick = { events(OnBoardingEvent.GetStarted) },
                 shape = MaterialTheme.shapes.medium,
                 contentPadding = PaddingValues(
                     horizontal = 24.dp,
                     vertical = 12.dp
                 )
-            ){
+            ) {
                 Text(
                     text = stringResource(Res.string.get_started),
                     style = MaterialTheme.typography.bodyMedium

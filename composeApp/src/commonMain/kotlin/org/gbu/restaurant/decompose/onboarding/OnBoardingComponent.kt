@@ -1,6 +1,7 @@
 package org.gbu.restaurant.decompose.onboarding
 
-import org.gbu.restaurant.viewmodels.OnBoardingViewModel
+import org.gbu.restaurant.ui.screens.on_boarding.viewmodel.OnBoardingViewModel
+
 
 interface OnBoardingComponent {
 

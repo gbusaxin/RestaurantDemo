@@ -1,16 +1,16 @@
 package org.gbu.restaurant.decompose.onboarding
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.essenty.instancekeeper.getOrCreate
-import org.gbu.restaurant.viewmodels.OnBoardingViewModel
+import org.gbu.restaurant.ui.screens.on_boarding.viewmodel.OnBoardingViewModel
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class OnBoardingComponentImpl(
     componentContext: ComponentContext,
     val onOnBoardingFinished: () -> Unit
-) : OnBoardingComponent, ComponentContext by componentContext {
+) : OnBoardingComponent, ComponentContext by componentContext, KoinComponent {
 
-    override val viewModel: OnBoardingViewModel
-        get() = instanceKeeper.getOrCreate { OnBoardingViewModel() }
+    override val viewModel: OnBoardingViewModel by inject<OnBoardingViewModel>()
 
     override fun onBoarded() {
         onOnBoardingFinished()

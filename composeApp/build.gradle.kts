@@ -28,6 +28,9 @@ kotlin {
     }
 
     sourceSets {
+//        iosMain.dependencies {
+//            implementation(project(":composeApp"))
+//        }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -70,6 +73,9 @@ kotlin {
 
             implementation("com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha")
             implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+
+            implementation("androidx.datastore:datastore-preferences:1.1.3")
+            implementation("androidx.datastore:datastore-preferences-core:1.1.3")
         }
     }
 }

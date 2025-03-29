@@ -9,12 +9,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import org.gbu.restaurant.business.data.entity.User
+import org.gbu.restaurant.ui.token_manager.TokenManager
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class RootViewModel : InstanceKeeper.Instance {
+class RootViewModel : InstanceKeeper.Instance, KoinComponent {
 
     private val viewModelScope = CoroutineScope(Dispatchers.Unconfined)
     private val _user = MutableStateFlow<User?>(null)
     val user : StateFlow<User?> = _user
+    val tokenManager: TokenManager by inject<TokenManager>()
 
     fun updateLoggedUser(user: User?){
         _user.update { user }

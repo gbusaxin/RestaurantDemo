@@ -1,4 +1,4 @@
-package org.gbu.restaurant.ui.sensor
+package org.gbu.restaurant.business.common
 
 fun interface SensorManager {
     fun registerListener(listener: Listener)

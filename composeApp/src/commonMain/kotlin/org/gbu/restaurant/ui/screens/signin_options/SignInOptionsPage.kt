@@ -1,4 +1,4 @@
-package org.gbu.restaurant.ui.screens
+package org.gbu.restaurant.ui.screens.signin_options
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,14 +13,21 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
+import org.gbu.restaurant.business.core.UIComponent
 import org.gbu.restaurant.ui.composables.SignInWithButton
 import org.gbu.restaurant.ui.composables.HorizontalBrandLogo
+import org.gbu.restaurant.ui.screens.signin_options.viewmodel.SignInOptionsAction
+import org.gbu.restaurant.ui.screens.signin_options.viewmodel.SignInOptionsEvent
+import org.gbu.restaurant.ui.screens.signin_options.viewmodel.SignInOptionsState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import restaurantdemo.composeapp.generated.resources.Res
@@ -39,9 +46,33 @@ import restaurantdemo.composeapp.generated.resources.terms_and_conditions
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SignInOptionsPage(
+    state: SignInOptionsState,
+    errors: Flow<UIComponent>,
+    action: Flow<SignInOptionsAction>,
+    events: (SignInOptionsEvent) -> Unit,
     onCreateAccount: () -> Unit,
-    onSignInAccount: () -> Unit
+    onSignInAccount: () -> Unit,
+    onSignInAppleAccount: () -> Unit,
+    onSignInGoogleAccount: () -> Unit
 ) {
+    LaunchedEffect(key1 = action){
+        action.onEach { effect ->
+            when(effect){
+                SignInOptionsAction.Navigation.CreateAccount -> {
+                    onCreateAccount()
+                }
+                SignInOptionsAction.Navigation.SignInApple -> {
+                    onSignInAppleAccount()
+                }
+                SignInOptionsAction.Navigation.SignInGoogle -> {
+                    onSignInGoogleAccount()
+                }
+                SignInOptionsAction.Navigation.SignInRestaurant -> {
+                    onSignInAccount()
+                }
+            }
+        }.collect{}
+    }
 
     Column(
         modifier = Modifier
@@ -84,7 +115,7 @@ fun SignInOptionsPage(
                 containerColor = MaterialTheme.colorScheme.onSurface,
                 contentColor = MaterialTheme.colorScheme.surface,
                 iconTint = MaterialTheme.colorScheme.surface,
-                onClick = { onSignInAccount() }
+                onClick = { events(SignInOptionsEvent.SignInWithRestaurant) }
             )
             SignInWithButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -94,7 +125,7 @@ fun SignInOptionsPage(
                     .copy(fontWeight = FontWeight.Normal),
                 containerColor = MaterialTheme.colorScheme.onPrimary,
                 contentColor = MaterialTheme.colorScheme.onBackground,
-                onClick = { } // TODO(via OAuth 2) put lambda in constructor
+                onClick = { events(SignInOptionsEvent.SignInWithApple) }
             )
             SignInWithButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -104,7 +135,7 @@ fun SignInOptionsPage(
                     .copy(fontWeight = FontWeight.Normal),
                 containerColor = MaterialTheme.colorScheme.inversePrimary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
-                onClick = {} // TODO(via OAuth 2) put lambda in constructor
+                onClick = { events(SignInOptionsEvent.SignInWithGoogle) }
             )
             Text(
                 modifier = Modifier
@@ -138,7 +169,7 @@ fun SignInOptionsPage(
                 Text(
                     modifier = Modifier
                         .clip(CircleShape)
-                        .clickable { }, // TODO
+                        .clickable { events(SignInOptionsEvent.TermsAndConditions) },
                     text = stringResource(Res.string.terms_and_conditions),
                     style = MaterialTheme.typography.titleMedium
                         .copy(fontWeight = FontWeight.Bold),
@@ -153,7 +184,7 @@ fun SignInOptionsPage(
                 Text(
                     modifier = Modifier
                         .clip(CircleShape)
-                        .clickable { }, // TODO
+                        .clickable { events(SignInOptionsEvent.PrivacyAndPolicy) },
                     text = stringResource(Res.string.privacy_and_policies),
                     style = MaterialTheme.typography.titleMedium
                         .copy(fontWeight = FontWeight.Bold),

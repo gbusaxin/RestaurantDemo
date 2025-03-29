@@ -19,15 +19,12 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.moriatsushi.insetsx.SystemBarsBehavior
 import com.moriatsushi.insetsx.rememberWindowInsetsController
 import org.gbu.restaurant.business.common.Context
-import org.gbu.restaurant.business.di.LocalKoinApplication
+import org.gbu.restaurant.business.common.SensorManager
 import org.gbu.restaurant.decompose.root.RestaurantRoot
 import org.gbu.restaurant.ui.screens.BottomNavPage
 import org.gbu.restaurant.ui.screens.ContactPage
 import org.gbu.restaurant.ui.screens.LoginPage
-import org.gbu.restaurant.ui.screens.OnBoardingPage
 import org.gbu.restaurant.ui.screens.PhoneVerificationPage
-import org.gbu.restaurant.ui.screens.SignInOptionsPage
-import org.gbu.restaurant.ui.screens.SplashPage
 import org.gbu.restaurant.ui.screens.add_address.AddAddressInfoPage
 import org.gbu.restaurant.ui.screens.add_address.AddAddressPage
 import org.gbu.restaurant.ui.screens.add_address.viewmodel.AddAddressViewModel
@@ -35,7 +32,9 @@ import org.gbu.restaurant.ui.screens.address.AddressPage
 import org.gbu.restaurant.ui.screens.checkout.CheckoutPage
 import org.gbu.restaurant.ui.screens.menu_detail.MenuDetailsPage
 import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailEvent
-import org.gbu.restaurant.ui.sensor.SensorManager
+import org.gbu.restaurant.ui.screens.on_boarding.OnBoardingPage
+import org.gbu.restaurant.ui.screens.signin_options.SignInOptionsPage
+import org.gbu.restaurant.ui.screens.splash.SplashPage
 import org.gbu.restaurant.viewmodels.LocalUser
 
 lateinit var addAddressViewModel: AddAddressViewModel
@@ -59,9 +58,14 @@ fun RestaurantApplication(
         }
     }
 
+    LaunchedEffect(key1 = root.rootViewModel.tokenManager.state.value.isTokenAvailable) {
+        if (!root.rootViewModel.tokenManager.state.value.isTokenAvailable) {
+            root.handleInvalidToken()
+        }
+    }
+
     RestaurantTheme {
         CompositionLocalProvider(
-            LocalKoinApplication provides root.koinApplication,
             LocalUser provides user
         ) {
             SharedTransitionLayout {
@@ -93,13 +97,25 @@ fun RestaurantApplication(
                             }
 
                             is RestaurantRoot.MainDestinationChild.OnBoarding -> {
-                                OnBoardingPage(onGetStarted = { child.component.onBoarded() })
+                                OnBoardingPage(
+                                    onGetStarted = { child.component.onBoarded() },
+                                    state = child.component.viewModel.state.value,
+                                    action = child.component.viewModel.action,
+                                    events = child.component.viewModel::onTriggerEvent,
+                                    errors = child.component.viewModel.errors
+                                )
                             }
 
                             is RestaurantRoot.MainDestinationChild.SignInOptions -> {
                                 SignInOptionsPage(
+                                    state = child.component.singInOptionsViewModel.state.value,
+                                    errors = child.component.singInOptionsViewModel.errors,
+                                    action = child.component.singInOptionsViewModel.action,
+                                    events = child.component.singInOptionsViewModel::onTriggerEvent,
                                     onCreateAccount = { child.component.onCreateAccountClicked() },
-                                    onSignInAccount = { child.component.onSignInToAccountClicked() }
+                                    onSignInAccount = { child.component.onSignInToAccountClicked() },
+                                    onSignInGoogleAccount = {}, // TODO oauth2
+                                    onSignInAppleAccount = {} // TODO oauth2
                                 )
                             }
 

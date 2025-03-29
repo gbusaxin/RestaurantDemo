@@ -2,7 +2,7 @@ package org.gbu.restaurant.decompose.signin
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
-import org.gbu.restaurant.viewmodels.SignInOptionsViewModel
+import org.gbu.restaurant.ui.screens.signin_options.viewmodel.SignInOptionsViewModel
 
 class SignInOptionsComponentImpl(
     componentContext: ComponentContext,

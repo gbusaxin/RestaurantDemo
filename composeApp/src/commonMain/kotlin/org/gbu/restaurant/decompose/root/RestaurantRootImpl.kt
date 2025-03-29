@@ -39,12 +39,19 @@ class RestaurantRootImpl(
         get() = instanceKeeper.getOrCreate { RootViewModel() }
     private val _backstack = this.childStack(
         source = navigation,
-        initialConfiguration = MainNavigationConfig.Splash, // Splash is first screen by default
+        initialConfiguration = MainNavigationConfig.Splash,
         handleBackButton = true
     ) { config, context ->
         createChildFactory(config, context)
     }
     override val backstack = _backstack
+
+    override fun handleInvalidToken() {
+        mainDispatcher.launch {
+            navigation.pop()
+            navigation.replaceAll(MainNavigationConfig.Splash)
+        }
+    }
 
     private fun createChildFactory(
         config: MainNavigationConfig,
@@ -141,6 +148,7 @@ class RestaurantRootImpl(
         componentContext = context,
         onSplashTimeFinished = { isOnboardedBefore ->
             mainDispatcher.launch {
+                println("Splash isonboarded: $isOnboardedBefore")
                 if (isOnboardedBefore) {
                     navigation.replaceCurrent(configuration = MainNavigationConfig.SignInOptions)
                 } else {

@@ -65,9 +65,9 @@ import org.gbu.restaurant.business.data.entity.MenuItem
 import org.gbu.restaurant.ui.composables.DefaultScreenUI
 import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailEvent
 import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailState
-import org.gbu.restaurant.ui.sensor.Listener
-import org.gbu.restaurant.ui.sensor.SensorData
-import org.gbu.restaurant.ui.sensor.SensorManager
+import org.gbu.restaurant.business.common.Listener
+import org.gbu.restaurant.business.common.SensorData
+import org.gbu.restaurant.business.common.SensorManager
 import org.jetbrains.compose.resources.painterResource
 import restaurantdemo.composeapp.generated.resources.Res
 import restaurantdemo.composeapp.generated.resources.cart_icon

@@ -1,6 +1,6 @@
 package org.gbu.restaurant.decompose.signin
 
-import org.gbu.restaurant.viewmodels.SignInOptionsViewModel
+import org.gbu.restaurant.ui.screens.signin_options.viewmodel.SignInOptionsViewModel
 
 interface SignInOptionsComponent {
 
