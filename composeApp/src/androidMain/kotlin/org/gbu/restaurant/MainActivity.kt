@@ -7,31 +7,32 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
 import com.arkivanov.decompose.defaultComponentContext
-import org.gbu.restaurant.business.di.initKoinApp
 import org.gbu.restaurant.decompose.root.RestaurantRootImpl
+import org.gbu.restaurant.di.doInitKoinApplication
 import org.koin.dsl.module
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val koinApplication = initKoinApp(
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        val koinApp = doInitKoinApplication(
             listOf(
                 module {
                     single<Context> { applicationContext }
                     single<Activity> { this@MainActivity }
                 }
-            ), context = application
+            ),
+            context = application
         )
         val root = RestaurantRootImpl(
-            componentContext = defaultComponentContext(),
-            koinApplication = koinApplication
+            defaultComponentContext(),
+            koinApp
         )
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContent {
-            MainView(root = root, appContext = application)
+            MainView(appContext = application, root = root)
         }
     }
 }

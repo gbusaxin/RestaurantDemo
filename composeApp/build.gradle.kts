@@ -22,7 +22,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "ComposeApp"
+            baseName = "composeApp"
             isStatic = true
         }
     }
@@ -37,7 +37,6 @@ kotlin {
 
 
             implementation("com.google.android.gms:play-services-location:21.3.0")
-            implementation("com.google.android.gms:play-services-maps:19.1.0")
             implementation("com.google.android.gms:play-services-maps:19.1.0")
         }
         commonMain.dependencies {
@@ -61,7 +60,7 @@ kotlin {
             implementation(libs.multiplatform.settings)
 
             // decompose
-            val decomposeVersion = "2.0.0"
+            val decomposeVersion = "2.1.0"
             api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
             api("com.arkivanov.decompose:decompose:$decomposeVersion-compose-experimental")
             api("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion-compose-experimental")

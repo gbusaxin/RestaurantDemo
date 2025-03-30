@@ -45,13 +45,18 @@ fun mainViewController(
     }
 
     val root = RestaurantRootImpl(
-        componentContext = DefaultComponentContext(lifecycle = LifecycleRegistry()),
-        koinApplication = koinApplication
+        DefaultComponentContext(lifecycle = LifecycleRegistry()),
+        koinApplication
     )
 
-    RestaurantApplication(context = Context(), root = root, sensorManager = sensorManager)
+    RestaurantApplication(
+        context = Context(),
+        sensorManager = sensorManager,
+        root = root
+    )
 }
 
+val context = Context()
 lateinit var mapViewController: () -> UIViewController
 var globalLatitude: Double = 0.0
 var globalLongitude: Double = 0.0

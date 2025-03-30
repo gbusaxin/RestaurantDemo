@@ -1,4 +1,4 @@
-package org.gbu.restaurant.business.di
+package org.gbu.restaurant.di
 
 import androidx.compose.runtime.compositionLocalOf
 import org.gbu.restaurant.business.common.Context
@@ -27,33 +27,33 @@ import org.koin.core.module.Module
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 
-fun initKoinApp(
+fun doInitKoinApplication(
     platformModules: List<Module> = listOf(),
     context: Context
 ): KoinApplication {
-
     val koinApplication = koinApplication {
         modules(
-            listOf(
+            platformModules + listOf(
                 module {
-                    includes(platformModules)
-                    single<MenuDetailsViewModel> { MenuDetailsViewModel(getMenuDetailUseCase = get()) }
-                    single<GetMenuDetailsUseCase> { GetMenuDetailsUseCase() }
-                    single<CartViewModel> { CartViewModel(cartListUseCase = get()) }
-                    single<CartListUseCase> { CartListUseCase() }
-                    single<CheckoutViewModel> {
+                    factory<MenuDetailsViewModel> { MenuDetailsViewModel(getMenuDetailUseCase = get()) }
+                    factory<CartViewModel> { CartViewModel(cartListUseCase = get()) }
+                    factory<CheckoutViewModel> {
                         CheckoutViewModel(
                             cartListUseCase = get(),
                             getAddressesUseCase = get(),
                             buyProductUseCase = get()
                         )
                     }
+                    factory<AddressViewModel> { AddressViewModel(getAddressesUseCase = get()) }
+                    factory<AddAddressViewModel> { AddAddressViewModel(addAddressUseCase = get()) }
+                    factory<SplashViewModel> { SplashViewModel(isOnBoardedUseCase = get()) }
+                    factory<OnBoardingViewModel> { OnBoardingViewModel(setOnBoardingUseCase = get()) }
+                    single<GetMenuDetailsUseCase> { GetMenuDetailsUseCase() }
+                    single<CartListUseCase> { CartListUseCase() }
                     single<CartListUseCase> { CartListUseCase() }
                     single<GetAddressesUseCase> { GetAddressesUseCase() }
                     single<BuyProductUseCase> { BuyProductUseCase() }
-                    single<AddressViewModel> { AddressViewModel(getAddressesUseCase = get()) }
                     single<AddAddressUseCase> { AddAddressUseCase() }
-                    single<AddAddressViewModel> { AddAddressViewModel(addAddressUseCase = get()) }
                     single<CheckTokenUseCase> { CheckTokenUseCase(appDataStoreManager = get()) }
                     single<LogoutUseCase> { LogoutUseCase(appDataStoreManager = get()) }
                     single<AppDataStore> { AppDataStoreManager(context = context) }
@@ -63,18 +63,15 @@ fun initKoinApp(
                             logoutUseCase = get()
                         )
                     }
-                    single<SplashViewModel> { SplashViewModel(isOnBoardedUseCase = get()) }
                     single<IsOnBoardedUseCase> { IsOnBoardedUseCase(appDataStoreManager = get()) }
-                    single<OnBoardingViewModel> { OnBoardingViewModel(setOnBoardingUseCase = get()) }
                     single<SetOnBoardingUseCase> { SetOnBoardingUseCase(dataStoreManager = get()) }
                 }
-            )
-        )
+            ))
         createEagerInstances()
     }
     return startKoin(koinApplication)
 }
 
-val LocalKoinApplication = compositionLocalOf {
-//    initKoinApp()
+val LocalKoinApplication = compositionLocalOf<KoinApplication> {
+    error("koin application is not initialized")
 }

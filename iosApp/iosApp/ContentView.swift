@@ -2,31 +2,68 @@ import GoogleMaps
 import SwiftUI
 import UIKit
 import Foundation
-import shared
+import composeApp
+
+class MapViewCoordinator: NSObject, GMSMapViewDelegate, CLLocationManagerDelegate {
+    var parent: GoogleMapView
+    var locationManager = CLLocationManager()
+    var marker = GMSMarker()
+    
+    init(parent: GoogleMapView) {
+        self.parent = parent
+        super.init()
+        
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
+    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
+        parent.userLatitude = coordinate.latitude
+        parent.userLongitude = coordinate.longitude
+        parent.didSelectLocation(coordinate.latitude, coordinate.longitude)
+        
+        marker.position = coordinate
+        marker.map = mapView
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
+        guard let location = locations.first else { return }
+        
+        parent.userLatitude = location.coordinate.latitude
+        parent.userLongitude = location.coordinate.longitude
+        
+        marker.position = location.coordinate
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error getting user location: \(error.localizedDescription)")
+    }
+}
 
 struct GoogleMapView: UIViewRepresentable {
     @Binding var userLatitude: Double
-    @Binding var userLontitude: Double
+    @Binding var userLongitude: Double
     var didSelectLocation: (Double, Double) -> Void
 
     func makeUIView(context: Context) -> GMSMapView {
         let options = GMSMapViewOptions()
-        options.camera = GMSCameraPosition(
-            withLatitude: userLatitude, longtitude: userLontitude, zoom: 10.0)
+        options.camera = GMSCameraPosition.camera(
+            withLatitude: userLatitude, longitude: userLongitude, zoom: 10.0)
 
         let mapView = GMSMapView(options: options)
         mapView.delegate = context.coordinator
 
-        context.coordinator.mapView = mapView
+        context.coordinator.marker.map = mapView
         context.coordinator.marker.position = CLLocationCoordinate2D(
-            latitude: userLatitude, longitude: userLontitude)
+            latitude: userLatitude, longitude: userLongitude)
 
         return mapView
     }
 
-    func updateUIView(_ mapView: GMSMapView, context: Context) {
+    func updateUIView(_ uiView: GMSMapView, context: Context) {
         context.coordinator.marker.position = CLLocationCoordinate2D(
-            latitude: userLatitude, longitude: userLontitude)
+            latitude: userLatitude, longitude: userLongitude)
     }
 
     func makeCoordinator() -> MapViewCoordinator {
@@ -36,22 +73,22 @@ struct GoogleMapView: UIViewRepresentable {
 
 struct ComposeView: UIViewControllerRepresentable {
     @Binding var userLatitude: Double
-    @Binding var userLontitude: Double
+    @Binding var userLongitude: Double
 
     func makeUIViewController(context: Context) -> UIViewController {
         Main_iosKt.mainViewController(
             mapUIViewController: { () -> UIViewController in
                 return UIHostingController(
                     rootView: GoogleMapView(
-                        userLatitude: $userLatitude, userLontitude: $userLontitude,
+                        userLatitude: $userLatitude, userLongitude: $userLongitude,
                         didSelectLocation: { lat, lon in
                             self.userLatitude = lat
-                            self.userLontitude = lon
+                            self.userLongitude = lon
                         }))
             },
             latitude: userLatitude,
-            longitude: userLontitude,
-            KoinAppKt.initKoinApp([], context)
+            longitude: userLongitude,
+            koinApplication: KoinAppKt.doInitKoinApplication(platformModules: [], context: Main_iosKt.context)
         )
     }
 
@@ -60,10 +97,10 @@ struct ComposeView: UIViewControllerRepresentable {
 
 struct ContentView: View {
     @State private var userLatitude: Double = 48.152958
-    @State private var userLontitude: Double = 17.165769
+    @State private var userLongitude: Double = 17.165769
 
     var body: some View {
-        ComposeView(userLatitude: $userLatitude, userLontitude: $userLontitude)
+        ComposeView(userLatitude: $userLatitude, userLongitude: $userLongitude)
             .ignoresSafeArea(.keyboard)  // Compose has own keyboard handler
     }
 }

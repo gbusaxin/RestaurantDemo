@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.moriatsushi.insetsx.SystemBarsBehavior
@@ -21,6 +24,8 @@ import com.moriatsushi.insetsx.rememberWindowInsetsController
 import org.gbu.restaurant.business.common.Context
 import org.gbu.restaurant.business.common.SensorManager
 import org.gbu.restaurant.decompose.root.RestaurantRoot
+import org.gbu.restaurant.decompose.root.RestaurantRootImpl
+import org.gbu.restaurant.di.LocalKoinApplication
 import org.gbu.restaurant.ui.screens.BottomNavPage
 import org.gbu.restaurant.ui.screens.ContactPage
 import org.gbu.restaurant.ui.screens.LoginPage
@@ -36,17 +41,17 @@ import org.gbu.restaurant.ui.screens.on_boarding.OnBoardingPage
 import org.gbu.restaurant.ui.screens.signin_options.SignInOptionsPage
 import org.gbu.restaurant.ui.screens.splash.SplashPage
 import org.gbu.restaurant.viewmodels.LocalUser
+import org.koin.core.KoinApplication
 
 lateinit var addAddressViewModel: AddAddressViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RestaurantApplication(
-    root: RestaurantRoot,
     sensorManager: SensorManager?,
-    context: Context
+    context: Context,
+    root: RestaurantRootImpl
 ) {
-
     val windowsInsets = rememberWindowInsetsController()
     val user by root.rootViewModel.user.collectAsState()
 
@@ -58,7 +63,7 @@ fun RestaurantApplication(
         }
     }
 
-    LaunchedEffect(key1 = root.rootViewModel.tokenManager.state.value.isTokenAvailable) {
+    LaunchedEffect(root.rootViewModel.tokenManager.state.value.isTokenAvailable) {
         if (!root.rootViewModel.tokenManager.state.value.isTokenAvailable) {
             root.handleInvalidToken()
         }

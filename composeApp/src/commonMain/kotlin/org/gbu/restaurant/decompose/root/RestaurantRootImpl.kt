@@ -148,7 +148,6 @@ class RestaurantRootImpl(
         componentContext = context,
         onSplashTimeFinished = { isOnboardedBefore ->
             mainDispatcher.launch {
-                println("Splash isonboarded: $isOnboardedBefore")
                 if (isOnboardedBefore) {
                     navigation.replaceCurrent(configuration = MainNavigationConfig.SignInOptions)
                 } else {
