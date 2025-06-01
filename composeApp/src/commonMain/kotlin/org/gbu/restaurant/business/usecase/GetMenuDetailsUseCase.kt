@@ -1,7 +1,7 @@
 package org.gbu.restaurant.business.usecase
 
 import org.gbu.restaurant.business.core.BaseUseCase
-import org.gbu.restaurant.business.data.entity.MenuItem
+import org.gbu.restaurant.business.data.local.entity.MenuItem
 import org.gbu.restaurant.business.data.network.common.MainGenericResponse
 import org.gbu.restaurant.business.data.network.common.ProgressBarState
 

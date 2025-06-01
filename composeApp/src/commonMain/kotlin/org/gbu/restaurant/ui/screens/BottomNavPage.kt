@@ -14,19 +14,26 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import org.gbu.restaurant.business.common.Context
 import org.gbu.restaurant.decompose.bottomnavholder.BottomNavComponent
 import org.gbu.restaurant.decompose.root.RestaurantRootImpl
 import org.gbu.restaurant.ui.composables.BottomNavUI
+import org.gbu.restaurant.ui.screens.cart.CartNav
 import org.gbu.restaurant.ui.screens.cart.CartPage
+import org.gbu.restaurant.ui.screens.home.HomeNav
 import org.gbu.restaurant.ui.screens.menu.MenuPage
+import org.gbu.restaurant.ui.screens.profile.ProfileNav
+import org.gbu.restaurant.ui.screens.wish_list.WishListNav
 
 @OptIn(ExperimentalDecomposeApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun BottomNavPage(
     bottomNavComponent: BottomNavComponent,
     onNavigationToMainChild: (child: RestaurantRootImpl.MainNavigationConfig) -> Unit,
-    sharedTransitionScope: SharedTransitionScope
+    sharedTransitionScope: SharedTransitionScope,
+    context: Context
 ) {
     val configs = bottomNavComponent.configs
     val pages by bottomNavComponent.pages.subscribeAsState()
@@ -49,32 +56,25 @@ fun BottomNavPage(
             userScrollEnabled = false
         ) {
             when (val page = pages.items[it].instance) {
-                is BottomNavComponent.BottomNavChild.Menu -> {
-                    MenuPage(
-                        menuViewModel = page.component.menuViewModel,
-                        onClick = { menuItem ->
-                            onNavigationToMainChild(
-                                RestaurantRootImpl.MainNavigationConfig.MenuDetail(
-                                    menuItem.id
-                                )
-                            )
-                        },
-                        sharedTransitionScope = sharedTransitionScope
-                    )
-                }
-
                 is BottomNavComponent.BottomNavChild.Cart -> {
-                    val viewModel = page.component.cartViewModel
-                    CartPage(
-                        state = viewModel.state.value,
-                        events = viewModel::onTriggerEvent,
-                        errors = viewModel.errors,
-                        navigateToDetail = { page.component.onClickToDetail(it) },
-                        navigateToCheckout = { page.component.onClickToCheckout() }
-                    )
+                    CartNav(page.component, context = context)
                 }
 
-                else -> println("BottomNavPage else block")// TODO()
+                is BottomNavComponent.BottomNavChild.Home -> {
+                    HomeNav(page.component)
+                }
+
+                is BottomNavComponent.BottomNavChild.WishList -> {
+                    WishListNav(page.component)
+                }
+
+                is BottomNavComponent.BottomNavChild.Profile -> {
+                    ProfileNav(page.component)
+                }
+
+                else -> {
+                    println("Unknown bottom nav page")
+                }
             }
 
         }

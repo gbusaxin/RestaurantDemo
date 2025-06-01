@@ -13,18 +13,13 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.gbu.restaurant.decompose.add_address.AddAddressComponentImpl
-import org.gbu.restaurant.decompose.add_address.AddAddressInfoComponentImpl
-import org.gbu.restaurant.decompose.address.AddressComponentImpl
 import org.gbu.restaurant.decompose.bottomnavholder.BottomNavComponentImpl
-import org.gbu.restaurant.decompose.checkout.CheckoutComponentImpl
-import org.gbu.restaurant.decompose.contactsinfo.ContactInfoComponentImpl
-import org.gbu.restaurant.decompose.login.LoginComponentImpl
-import org.gbu.restaurant.decompose.menudetail.MenuDetailComponentImpl
-import org.gbu.restaurant.decompose.onboarding.OnBoardingComponentImpl
-import org.gbu.restaurant.decompose.phoneverification.PhoneVerificationComponentImpl
-import org.gbu.restaurant.decompose.signin.SignInOptionsComponentImpl
-import org.gbu.restaurant.decompose.splash.SplashComponentImpl
+import org.gbu.restaurant.decompose.root.contactsinfo.ContactInfoComponentImpl
+import org.gbu.restaurant.decompose.root.login.LoginComponentImpl
+import org.gbu.restaurant.decompose.root.onboarding.OnBoardingComponentImpl
+import org.gbu.restaurant.decompose.root.phoneverification.PhoneVerificationComponentImpl
+import org.gbu.restaurant.decompose.root.signin.SignInOptionsComponentImpl
+import org.gbu.restaurant.decompose.root.splash.SplashComponentImpl
 import org.gbu.restaurant.viewmodels.RootViewModel
 import org.koin.core.KoinApplication
 
@@ -40,10 +35,9 @@ class RestaurantRootImpl(
     private val _backstack = this.childStack(
         source = navigation,
         initialConfiguration = MainNavigationConfig.Splash,
-        handleBackButton = true
-    ) { config, context ->
-        createChildFactory(config, context)
-    }
+        handleBackButton = true,
+        childFactory = ::createChildFactory
+    )
     override val backstack = _backstack
 
     override fun handleInvalidToken() {
@@ -89,58 +83,8 @@ class RestaurantRootImpl(
             is MainNavigationConfig.BottomNavHolder -> RestaurantRoot.MainDestinationChild.BottomNavHolder(
                 component = buildBottomNavComponent(componentContext)
             )
-
-            is MainNavigationConfig.MenuDetail -> RestaurantRoot.MainDestinationChild.MenuDetail(
-                component = buildMenuDetailComponent(componentContext, config.menuItemId)
-            )
-
-            is MainNavigationConfig.Checkout -> RestaurantRoot.MainDestinationChild.Checkout(
-                component = buildCheckoutComponent(componentContext)
-            )
-
-            is MainNavigationConfig.Address -> RestaurantRoot.MainDestinationChild.Address(
-                component = buildAddressComponent(componentContext)
-            )
-
-            is MainNavigationConfig.AddAddress -> RestaurantRoot.MainDestinationChild.AddAddress(
-                component = buildAddAddressComponent(componentContext)
-            )
-
-            is MainNavigationConfig.AddAddressInfo -> RestaurantRoot.MainDestinationChild.AddAddressInfo(
-                component = buildAddAddressInfoComponent(componentContext)
-            )
         }
     }
-
-    private fun buildAddAddressInfoComponent(context: ComponentContext) =
-        AddAddressInfoComponentImpl(
-            componentContext = context,
-            onPopUp = { mainDispatcher.launch { navigation.pop() } }
-        )
-
-    private fun buildAddAddressComponent(context: ComponentContext) = AddAddressComponentImpl(
-        componentContext = context,
-        onAddAddressInformation = { mainDispatcher.launch { navigation.push(MainNavigationConfig.AddAddressInfo) } },
-        onPopUp = { mainDispatcher.launch { navigation.pop() } }
-    )
-
-    private fun buildAddressComponent(context: ComponentContext) = AddressComponentImpl(
-        componentContext = context, onNavigateToAddAddress = {
-            mainDispatcher.launch {
-                navigation.push(configuration = MainNavigationConfig.AddAddress)
-            }
-        }, onPopUp = { mainDispatcher.launch { navigation.pop() } }
-    )
-
-    private fun buildCheckoutComponent(context: ComponentContext) = CheckoutComponentImpl(
-        componentContext = context,
-        onPopUp = { mainDispatcher.launch { navigation.pop() } },
-        onNavigateToAddress = {
-            mainDispatcher.launch {
-                navigation.push(configuration = MainNavigationConfig.Address)
-            }
-        }
-    )
 
     private fun buildSplashComponent(
         context: ComponentContext
@@ -222,19 +166,6 @@ class RestaurantRootImpl(
         }
     )
 
-    private fun buildMenuDetailComponent(
-        context: ComponentContext,
-        menuItemId: Long
-    ) = MenuDetailComponentImpl(
-        componentContext = context,
-        onBackClicked = {
-            mainDispatcher.launch {
-                navigation.pop()
-            }
-        },
-        menuItemId = menuItemId
-    )
-
     sealed class MainNavigationConfig : Parcelable {
         @Parcelize
         data object Splash : MainNavigationConfig()
@@ -256,21 +187,6 @@ class RestaurantRootImpl(
 
         @Parcelize
         data object BottomNavHolder : MainNavigationConfig()
-
-        @Parcelize
-        data class MenuDetail(val menuItemId: Long) : MainNavigationConfig()
-
-        @Parcelize
-        data object Checkout : MainNavigationConfig()
-
-        @Parcelize
-        data object Address : MainNavigationConfig()
-
-        @Parcelize
-        data object AddAddress : MainNavigationConfig()
-
-        @Parcelize
-        data object AddAddressInfo : MainNavigationConfig()
     }
 
 }

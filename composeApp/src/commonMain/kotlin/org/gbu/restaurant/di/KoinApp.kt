@@ -9,16 +9,21 @@ import org.gbu.restaurant.business.usecase.BuyProductUseCase
 import org.gbu.restaurant.business.usecase.CartListUseCase
 import org.gbu.restaurant.business.usecase.CheckTokenUseCase
 import org.gbu.restaurant.business.usecase.GetAddressesUseCase
+import org.gbu.restaurant.business.usecase.GetHomeUseCase
 import org.gbu.restaurant.business.usecase.GetMenuDetailsUseCase
+import org.gbu.restaurant.business.usecase.GetSearchFilterUseCase
 import org.gbu.restaurant.business.usecase.IsOnBoardedUseCase
 import org.gbu.restaurant.business.usecase.LogoutUseCase
+import org.gbu.restaurant.business.usecase.SearchUseCase
 import org.gbu.restaurant.business.usecase.SetOnBoardingUseCase
 import org.gbu.restaurant.ui.screens.add_address.viewmodel.AddAddressViewModel
 import org.gbu.restaurant.ui.screens.address.viewmodel.AddressViewModel
 import org.gbu.restaurant.ui.screens.cart.viewmodel.CartViewModel
 import org.gbu.restaurant.ui.screens.checkout.viewmodel.CheckoutViewModel
+import org.gbu.restaurant.ui.screens.home.viewmodel.HomeViewModel
 import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailsViewModel
 import org.gbu.restaurant.ui.screens.on_boarding.viewmodel.OnBoardingViewModel
+import org.gbu.restaurant.ui.screens.search.viewmodel.SearchViewModel
 import org.gbu.restaurant.ui.screens.splash.viewmodel.SplashViewModel
 import org.gbu.restaurant.ui.token_manager.TokenManager
 import org.koin.core.KoinApplication
@@ -48,6 +53,16 @@ fun doInitKoinApplication(
                     factory<AddAddressViewModel> { AddAddressViewModel(addAddressUseCase = get()) }
                     factory<SplashViewModel> { SplashViewModel(isOnBoardedUseCase = get()) }
                     factory<OnBoardingViewModel> { OnBoardingViewModel(setOnBoardingUseCase = get()) }
+                    factory<HomeViewModel> { HomeViewModel(homeUseCase = get()) }
+                    factory<SearchViewModel> {
+                        SearchViewModel(
+                            searchUseCase = get(),
+                            getSearchFilterUseCase = get()
+                        )
+                    }
+                    single<SearchUseCase> { SearchUseCase(appDataStoreManager = get()) }
+                    single<GetSearchFilterUseCase> { GetSearchFilterUseCase(appDataStoreManager = get()) }
+                    single<GetHomeUseCase> { GetHomeUseCase(appDataStoreManager = get()) }
                     single<GetMenuDetailsUseCase> { GetMenuDetailsUseCase() }
                     single<CartListUseCase> { CartListUseCase() }
                     single<CartListUseCase> { CartListUseCase() }

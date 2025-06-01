@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.Flow
 import org.gbu.restaurant.business.core.UIComponent
-import org.gbu.restaurant.business.data.entity.Address
+import org.gbu.restaurant.business.data.local.entity.Address
 import org.gbu.restaurant.ui.composables.DefaultScreenUI
 import org.gbu.restaurant.ui.composables.TextWithIcon
 import org.gbu.restaurant.ui.screens.address.viewmodel.AddressEvent

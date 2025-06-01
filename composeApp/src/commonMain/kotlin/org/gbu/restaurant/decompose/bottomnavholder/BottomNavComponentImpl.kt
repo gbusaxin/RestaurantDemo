@@ -13,22 +13,22 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.gbu.restaurant.decompose.cart.CartComponentImpl
-import org.gbu.restaurant.decompose.menu.MenuComponentImpl
+import org.gbu.restaurant.decompose.bottomnavholder.cart.CartNavComponentImpl
+import org.gbu.restaurant.decompose.bottomnavholder.home.HomeNavComponentImpl
+import org.gbu.restaurant.decompose.bottomnavholder.profile.ProfileNavComponentImpl
+import org.gbu.restaurant.decompose.bottomnavholder.wish_list.WishListNavComponentImpl
 import org.gbu.restaurant.decompose.root.RestaurantRootImpl
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import restaurantdemo.composeapp.generated.resources.Res
 import restaurantdemo.composeapp.generated.resources.cart
 import restaurantdemo.composeapp.generated.resources.cart_icon
-import restaurantdemo.composeapp.generated.resources.delivery
-import restaurantdemo.composeapp.generated.resources.delivery_icon
-import restaurantdemo.composeapp.generated.resources.menu
+import restaurantdemo.composeapp.generated.resources.earth_icon
+import restaurantdemo.composeapp.generated.resources.home
 import restaurantdemo.composeapp.generated.resources.menu_icon
-import restaurantdemo.composeapp.generated.resources.other
-import restaurantdemo.composeapp.generated.resources.other_icon
 import restaurantdemo.composeapp.generated.resources.profile
 import restaurantdemo.composeapp.generated.resources.user_profile_icon
+import restaurantdemo.composeapp.generated.resources.wish_list
 
 @OptIn(ExperimentalDecomposeApi::class)
 class BottomNavComponentImpl(
@@ -37,11 +37,8 @@ class BottomNavComponentImpl(
 ) : BottomNavComponent, ComponentContext by componentContext {
 
     override val configs = listOf(
-        BottomNavConfig.Menu,
+        BottomNavConfig.Home,
         BottomNavConfig.Cart,
-//        BottomNavConfig.Delivery,
-//        BottomNavConfig.Profile,
-//        BottomNavConfig.Other, TODO()
     )
     private val mainDispatcher = CoroutineScope(Dispatchers.Main)
 
@@ -58,8 +55,7 @@ class BottomNavComponentImpl(
         childFactory = ::createChildPageFactory
     )
 
-    override val pages: Value<ChildPages<*, BottomNavComponent.BottomNavChild>>
-        get() = _pages
+    override val pages: Value<ChildPages<*, BottomNavComponent.BottomNavChild>> = _pages
 
     override fun onNavigationToMainChild(child: RestaurantRootImpl.MainNavigationConfig) {
         onNavigateToMainChildRequested(child)
@@ -76,34 +72,50 @@ class BottomNavComponentImpl(
         componentContext: ComponentContext
     ): BottomNavComponent.BottomNavChild {
         return when (config) {
-            is BottomNavConfig.Menu -> BottomNavComponent.BottomNavChild.Menu(
-                component = buildMenuComponent(componentContext)
+            is BottomNavConfig.Home -> BottomNavComponent.BottomNavChild.Home(
+                component = buildHomeNavComponent(context = componentContext)
             )
-//            is BottomNavConfig.Delivery ->
+
             is BottomNavConfig.Cart -> BottomNavComponent.BottomNavChild.Cart(
-                component = buildCartComponent(componentContext)
+                component = buildCartNavComponent(componentContext)
             )
-//            is BottomNavConfig.Profile ->
-//            is BottomNavConfig.Other ->
-            else -> TODO()
+
+            is BottomNavConfig.WishList -> BottomNavComponent.BottomNavChild.WishList(
+                component = buildWishListComponent(componentContext)
+            )
+
+            is BottomNavConfig.Profile -> BottomNavComponent.BottomNavChild.Profile(
+                component = buildProfileNavComponent(componentContext)
+            )
         }
     }
 
-    private fun buildMenuComponent(context: ComponentContext) = MenuComponentImpl(
+    private fun buildProfileNavComponent(context: ComponentContext) = ProfileNavComponentImpl(
+        componentContext = context
+    )
+
+    private fun buildWishListComponent(context: ComponentContext) = WishListNavComponentImpl(
         componentContext = context,
-        onMenuDetail = {
-            onNavigationToMainChild(RestaurantRootImpl.MainNavigationConfig.MenuDetail(it.id))
+        onNavigateHomeChild = { homeNavConfig ->
+            val homeIndex = configs.indexOf(BottomNavConfig.Home)
+            onNewPageSelected(homeIndex)
+            ((pages.value.items[homeIndex]).instance as? BottomNavComponent.BottomNavChild.Home)
+                ?.component?.onHomeChildNavigation(homeNavConfig)
         }
     )
 
-    private fun buildCartComponent(context: ComponentContext) = CartComponentImpl(
+    private fun buildCartNavComponent(context: ComponentContext) = CartNavComponentImpl(
         componentContext = context,
-        clickToDetail = {
-            onNavigationToMainChild(RestaurantRootImpl.MainNavigationConfig.MenuDetail(it))
-        },
-        clickToCheckout = {
-            onNavigationToMainChild(RestaurantRootImpl.MainNavigationConfig.Checkout)
+        onNavigateHomeChild = { homeNavConfig ->
+            val homeIndex = configs.indexOf(BottomNavConfig.Home)
+            onNewPageSelected(homeIndex)
+            ((pages.value.items[homeIndex]).instance as? BottomNavComponent.BottomNavChild.Home)
+                ?.component?.onHomeChildNavigation(homeNavConfig)
         }
+    )
+
+    private fun buildHomeNavComponent(context: ComponentContext) = HomeNavComponentImpl(
+        componentContext = context
     )
 
     sealed class BottomNavConfig(
@@ -111,18 +123,10 @@ class BottomNavComponentImpl(
         val icon: DrawableResource
     ) : Parcelable {
         @Parcelize
-        data object Menu :
-            BottomNavConfig(
-                title = Res.string.menu,
-                icon = Res.drawable.menu_icon
-            )
-
-        @Parcelize
-        data object Delivery :
-            BottomNavConfig(
-                title = Res.string.delivery,
-                icon = Res.drawable.delivery_icon
-            )
+        data object Home : BottomNavConfig(
+            title = Res.string.home,
+            icon = Res.drawable.menu_icon
+        )
 
         @Parcelize
         data object Cart :
@@ -132,17 +136,15 @@ class BottomNavComponentImpl(
             )
 
         @Parcelize
-        data object Profile :
-            BottomNavConfig(
-                title = Res.string.profile,
-                icon = Res.drawable.user_profile_icon
-            )
+        data object WishList : BottomNavConfig(
+            title = Res.string.wish_list,
+            icon = Res.drawable.earth_icon
+        )
 
         @Parcelize
-        data object Other :
-            BottomNavConfig(
-                title = Res.string.other,
-                icon = Res.drawable.other_icon
-            )
+        data object Profile : BottomNavConfig(
+            title = Res.string.profile,
+            icon = Res.drawable.user_profile_icon
+        )
     }
 }

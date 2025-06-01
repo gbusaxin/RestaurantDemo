@@ -45,7 +45,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.Flow
 import org.gbu.restaurant.business.core.UIComponent
-import org.gbu.restaurant.business.data.entity.CartItem
+import org.gbu.restaurant.business.data.local.entity.CartItem
 import org.gbu.restaurant.ui.composables.DefaultButton
 import org.gbu.restaurant.ui.composables.DefaultScreenUI
 import org.gbu.restaurant.ui.composables.noRippleClickable

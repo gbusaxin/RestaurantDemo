@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import org.gbu.restaurant.business.data.entity.Ingredient
-import org.gbu.restaurant.business.data.entity.MenuItem
+import org.gbu.restaurant.business.data.local.entity.Ingredient
+import org.gbu.restaurant.business.data.local.entity.MenuItem
 import org.jetbrains.compose.resources.painterResource
 import restaurantdemo.composeapp.generated.resources.Res
 import restaurantdemo.composeapp.generated.resources.hot_food_icon

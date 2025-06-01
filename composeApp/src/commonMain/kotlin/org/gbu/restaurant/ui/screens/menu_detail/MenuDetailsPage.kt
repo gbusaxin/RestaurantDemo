@@ -61,7 +61,7 @@ import kotlinx.coroutines.flow.Flow
 import org.gbu.restaurant.DarkOrange
 import org.gbu.restaurant.business.constants.CurrencyConstants
 import org.gbu.restaurant.business.core.UIComponent
-import org.gbu.restaurant.business.data.entity.MenuItem
+import org.gbu.restaurant.business.data.local.entity.MenuItem
 import org.gbu.restaurant.ui.composables.DefaultScreenUI
 import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailEvent
 import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailState

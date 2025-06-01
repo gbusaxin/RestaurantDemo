@@ -32,7 +32,7 @@ import kotlinx.coroutines.flow.onEach
 import org.gbu.restaurant.business.constants.CurrencyConstants
 import org.gbu.restaurant.business.core.UIComponent
 import org.gbu.restaurant.business.core.UIComponentState
-import org.gbu.restaurant.business.data.entity.Address
+import org.gbu.restaurant.business.data.local.entity.Address
 import org.gbu.restaurant.ui.composables.DefaultButton
 import org.gbu.restaurant.ui.composables.DefaultScreenUI
 import org.gbu.restaurant.ui.composables.SelectDeliveryDialog

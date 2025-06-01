@@ -3,8 +3,8 @@ package org.gbu.restaurant.ui.screens.checkout.viewmodel
 import org.gbu.restaurant.business.core.NetworkState
 import org.gbu.restaurant.business.core.UIComponentState
 import org.gbu.restaurant.business.core.ViewEvent
-import org.gbu.restaurant.business.data.entity.Address
-import org.gbu.restaurant.business.data.entity.ShippingType
+import org.gbu.restaurant.business.data.local.entity.Address
+import org.gbu.restaurant.business.data.local.entity.ShippingType
 
 sealed class CheckoutEvent : ViewEvent {
 

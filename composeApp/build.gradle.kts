@@ -75,6 +75,11 @@ kotlin {
 
             implementation("androidx.datastore:datastore-preferences:1.1.3")
             implementation("androidx.datastore:datastore-preferences-core:1.1.3")
+
+            implementation("io.coil-kt.coil3:coil-compose:3.0.0")
+//            implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
+
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
         }
     }
 }
@@ -98,6 +103,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {

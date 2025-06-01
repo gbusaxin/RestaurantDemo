@@ -1,6 +1,6 @@
 package org.gbu.restaurant.ui.states
 
-import org.gbu.restaurant.business.data.entity.User
+import org.gbu.restaurant.business.data.local.entity.User
 
 sealed interface LoginUIState {
     data object Idle : LoginUIState

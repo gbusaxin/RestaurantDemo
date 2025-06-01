@@ -22,7 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import org.gbu.restaurant.business.data.entity.MenuItem
+import org.gbu.restaurant.business.data.local.entity.MenuItem
 import org.gbu.restaurant.viewmodels.MenuViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)

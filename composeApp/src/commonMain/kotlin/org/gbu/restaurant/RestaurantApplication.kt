@@ -7,16 +7,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.moriatsushi.insetsx.SystemBarsBehavior
@@ -25,7 +22,6 @@ import org.gbu.restaurant.business.common.Context
 import org.gbu.restaurant.business.common.SensorManager
 import org.gbu.restaurant.decompose.root.RestaurantRoot
 import org.gbu.restaurant.decompose.root.RestaurantRootImpl
-import org.gbu.restaurant.di.LocalKoinApplication
 import org.gbu.restaurant.ui.screens.BottomNavPage
 import org.gbu.restaurant.ui.screens.ContactPage
 import org.gbu.restaurant.ui.screens.LoginPage
@@ -41,9 +37,6 @@ import org.gbu.restaurant.ui.screens.on_boarding.OnBoardingPage
 import org.gbu.restaurant.ui.screens.signin_options.SignInOptionsPage
 import org.gbu.restaurant.ui.screens.splash.SplashPage
 import org.gbu.restaurant.viewmodels.LocalUser
-import org.koin.core.KoinApplication
-
-lateinit var addAddressViewModel: AddAddressViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -76,7 +69,6 @@ fun RestaurantApplication(
             SharedTransitionLayout {
                 val sharedTransitionScope = this
                 val stack by root.backstack.subscribeAsState()
-                val current = stack.active.instance
 
                 Column(
                     modifier = Modifier
@@ -158,70 +150,8 @@ fun RestaurantApplication(
                                     onNavigationToMainChild = {
                                         child.component.onNavigationToMainChild(it)
                                     },
-                                    sharedTransitionScope = sharedTransitionScope
-                                )
-                            }
-
-                            is RestaurantRoot.MainDestinationChild.MenuDetail -> {
-                                val viewModel = child.component.viewModel
-                                val id = child.component.menuItemId
-                                LaunchedEffect(id) {
-                                    viewModel.onTriggerEvent(MenuDetailEvent.GetMenuItem(id))
-                                }
-                                MenuDetailsPage(
-                                    state = viewModel.state.value,
-                                    events = viewModel::onTriggerEvent,
-                                    errors = viewModel.errors,
-                                    goBack = { child.component.onBack() },
-                                    sensorManager = sensorManager,
                                     sharedTransitionScope = sharedTransitionScope,
-                                    onAddToCart = { /*child.component.onAddToCart()*/ }
-                                )
-                            }
-
-                            is RestaurantRoot.MainDestinationChild.Checkout -> {
-                                val viewModel = child.component.viewModel
-                                CheckoutPage(
-                                    errors = viewModel.errors,
-                                    action = viewModel.action,
-                                    state = viewModel.state.value,
-                                    events = viewModel::onTriggerEvent,
-                                    navigateToAddress = { child.component.navigateToAddress() },
-                                    popUp = { child.component.popUp() }
-                                )
-                            }
-
-                            is RestaurantRoot.MainDestinationChild.Address -> {
-                                val viewModel = child.component.viewModel
-                                AddressPage(
-                                    state = viewModel.state.value,
-                                    errors = viewModel.errors,
-                                    events = viewModel::onTriggerEvent,
-                                    navigateToAddAddress = { child.component.navigateToAddAddress() },
-                                    popUp = { child.component.popUp() }
-                                )
-                            }
-
-                            is RestaurantRoot.MainDestinationChild.AddAddress -> {
-                                addAddressViewModel = child.component.viewModel
-                                AddAddressPage(
-                                    context = context,
-                                    state = addAddressViewModel.state.value,
-                                    errors = addAddressViewModel.errors,
-                                    action = addAddressViewModel.action,
-                                    events = addAddressViewModel::onTriggerEvent,
-                                    navigationToAddInformation = { child.component.addAddressInformation() },
-                                    popUp = { child.component.popUp() }
-                                )
-                            }
-
-                            is RestaurantRoot.MainDestinationChild.AddAddressInfo -> {
-                                AddAddressInfoPage(
-                                    state = addAddressViewModel.state.value,
-                                    errors = addAddressViewModel.errors,
-                                    action = addAddressViewModel.action,
-                                    events = addAddressViewModel::onTriggerEvent,
-                                    popUp = { child.component.popUp() }
+                                    context = context
                                 )
                             }
                         }

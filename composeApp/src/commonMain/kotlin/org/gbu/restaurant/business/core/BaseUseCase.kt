@@ -7,7 +7,7 @@ import org.gbu.restaurant.business.data.network.common.MainGenericResponse
 import org.gbu.restaurant.business.data.network.common.ProgressBarState
 
 abstract class BaseUseCase<Params, ApiResponse, Result>(
-
+    private val appDataStoreManager: AppDataStore? = null
 ) {
 
     abstract suspend fun run(params: Params, token: String): MainGenericResponse<ApiResponse>?

@@ -3,8 +3,10 @@ package org.gbu.restaurant.decompose.bottomnavholder
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.router.pages.ChildPages
 import com.arkivanov.decompose.value.Value
-import org.gbu.restaurant.decompose.cart.CartComponent
-import org.gbu.restaurant.decompose.menu.MenuComponent
+import org.gbu.restaurant.decompose.bottomnavholder.cart.CartNavComponent
+import org.gbu.restaurant.decompose.bottomnavholder.home.HomeNavComponent
+import org.gbu.restaurant.decompose.bottomnavholder.profile.ProfileNavComponent
+import org.gbu.restaurant.decompose.bottomnavholder.wish_list.WishListNavComponent
 import org.gbu.restaurant.decompose.root.RestaurantRootImpl
 
 interface BottomNavComponent {
@@ -18,16 +20,9 @@ interface BottomNavComponent {
     fun onNavigationToMainChild(child: RestaurantRootImpl.MainNavigationConfig)
 
     sealed interface BottomNavChild {
-        data class Menu(val component: MenuComponent) : BottomNavChild
-
-//        data class Delivery(val component: DeliveryComponent) : BottomNavChild
-
-        data class Cart(val component: CartComponent) : BottomNavChild
-
-//        data class AboutUs(val component: ) // TODO()
-
-//        data class Profile(val component: ProfileComponent) : BottomNavChild
-
-//        data class Other(val component: OtherComponent) : BottomNavChild
+        data class Home(val component: HomeNavComponent) : BottomNavChild
+        data class Cart(val component: CartNavComponent) : BottomNavChild
+        data class WishList(val component: WishListNavComponent) : BottomNavChild
+        data class Profile(val component: ProfileNavComponent): BottomNavChild
     }
 }

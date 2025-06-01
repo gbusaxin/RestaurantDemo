@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.gbu.restaurant.business.data.entity.MenuItem
+import org.gbu.restaurant.business.data.local.entity.MenuItem
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 internal fun LazyListScope.Ingredients(

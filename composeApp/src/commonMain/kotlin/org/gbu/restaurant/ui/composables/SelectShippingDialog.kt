@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.gbu.restaurant.business.constants.CurrencyConstants
 import org.gbu.restaurant.business.core.UIComponentState
-import org.gbu.restaurant.business.data.entity.ShippingType
+import org.gbu.restaurant.business.data.local.entity.ShippingType
 import org.gbu.restaurant.ui.screens.checkout.viewmodel.CheckoutEvent
 import org.gbu.restaurant.ui.screens.checkout.viewmodel.CheckoutState
 import org.gbu.restaurant.ui.screens.checkout.viewmodel.shippingType_global
