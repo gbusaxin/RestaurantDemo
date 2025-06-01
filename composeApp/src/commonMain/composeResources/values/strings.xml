@@ -28,6 +28,7 @@
     <string name="change_phone_number">Change phone number</string>
     <string name="show_less">Show less</string>
     <string name="read_more">Read more</string>
+    <string name="promo_code">Promo code</string>
 
 
     <string name="see_all">See all</string>">
@@ -51,10 +52,12 @@
     <string name="wish_list">Wish list</string>
     <string name="notifications">Notifications</string>
     <string name="delivery">Delivery</string>
+    <string name="delivery_type">Delivery type</string>
     <string name="delivery_address">Delivery address</string>
     <string name="choose_delivery_type">Choose delivery type</string>
     <string name="delivery_cost">Delivery cost</string>
     <string name="cart">Cart</string>
+    <string name="amount">Amount</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="profile">Profile</string>
     <string name="edit_profile">Edit profile</string>
@@ -73,6 +76,10 @@
     <string name="add_new_address">Add new address</string>
     <string name="no_address">No address</string>
     <string name="location">Location</string>
+    <string name="active">Active</string>
+    <string name="failed">Failed</string>
+    <string name="success">Success</string>
+    <string name="canceled">Canceled</string>
 
     <string name="no_wifi_error">You are currently offline, please reconnect and try again.</string>
     <string name="try_again">Try Again</string>

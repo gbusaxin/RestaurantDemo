@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.gbu.restaurant.decompose.bottomnavholder.profile.my_coupons.MyCouponsComponentImpl
+import org.gbu.restaurant.decompose.bottomnavholder.profile.my_orders.MyOrdersComponentImpl
 import org.gbu.restaurant.decompose.bottomnavholder.profile.payment.PaymentComponentImpl
 import org.gbu.restaurant.decompose.bottomnavholder.profile.profile.ProfileComponentImpl
 
@@ -47,8 +48,17 @@ class ProfileNavComponentImpl(
             ProfileNavConfig.MyCoupons -> ProfileNavComponent.ProfileNavChild.MyCoupons(
                 component = buildMyCouponsComponent(componentContext)
             )
+
+            ProfileNavConfig.MyOrders -> ProfileNavComponent.ProfileNavChild.MyOrders(
+                component = buildMyOrdersComponent(componentContext)
+            )
         }
     }
+
+    private fun buildMyOrdersComponent(context: ComponentContext) = MyOrdersComponentImpl(
+        componentContext = context,
+        onPopUp = { mainDispatcher.launch { navigation.pop() } }
+    )
 
     private fun buildMyCouponsComponent(context: ComponentContext) = MyCouponsComponentImpl(
         componentContext = context,
@@ -77,7 +87,11 @@ class ProfileNavComponentImpl(
                 navigation.push(ProfileNavConfig.Payment)
             }
         },
-        onNavigateToMyOrders = { mainDispatcher.launch { TODO() } },
+        onNavigateToMyOrders = {
+            mainDispatcher.launch {
+                navigation.push(ProfileNavConfig.MyOrders)
+            }
+        },
         onNavigateToMyCoupons = {
             mainDispatcher.launch {
                 navigation.push(ProfileNavConfig.MyCoupons)
@@ -96,5 +110,8 @@ class ProfileNavComponentImpl(
 
         @Parcelize
         data object MyCoupons : ProfileNavConfig
+
+        @Parcelize
+        data object MyOrders : ProfileNavConfig
     }
 }

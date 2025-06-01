@@ -13,6 +13,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import org.gbu.restaurant.decompose.bottomnavholder.profile.ProfileNavComponent
 import org.gbu.restaurant.ui.screens.my_coupons.MyCouponsPage
+import org.gbu.restaurant.ui.screens.my_orders.MyOrdersPage
 import org.gbu.restaurant.ui.screens.payment_method.PaymentMethodPage
 
 @Composable
@@ -60,6 +61,16 @@ fun ProfileNav(root: ProfileNavComponent) {
                     PaymentMethodPage(
                         errors = viewModel.errors,
                         state = viewModel.state.value,
+                        events = viewModel::onTriggerEvent,
+                        popUp = { child.component.popUp() }
+                    )
+                }
+
+                is ProfileNavComponent.ProfileNavChild.MyOrders -> {
+                    val viewModel = child.component.viewModel
+                    MyOrdersPage(
+                        state = viewModel.state.value,
+                        errors = viewModel.errors,
                         events = viewModel::onTriggerEvent,
                         popUp = { child.component.popUp() }
                     )
