@@ -147,10 +147,6 @@ fun RestaurantApplication(
                             is RestaurantRoot.MainDestinationChild.BottomNavHolder -> {
                                 BottomNavPage(
                                     bottomNavComponent = child.component,
-                                    onNavigationToMainChild = {
-                                        child.component.onNavigationToMainChild(it)
-                                    },
-                                    sharedTransitionScope = sharedTransitionScope,
                                     context = context
                                 )
                             }

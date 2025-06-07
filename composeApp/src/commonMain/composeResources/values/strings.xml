@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+    <string name="welcome">Welcome</string>
     <string name="app_name">Restaurant DEMO</string>
+    <string name="already_have_account">Already have an account?</string>
     <string name="app_description">This is DEMO application. This application is created to demonstrate the capabilities and functionality, all menu items, texts, images can be changed depending on your wishes. Also, the application can be changed according to your wishes, for example, to demonstrate your product or services. To contact me, please contact the contacts listed below</string>
     <string name="app_discover">Discover this app to see all functionality</string>
     <string name="app_enjoy">Enjoy this App</string>
@@ -9,10 +11,23 @@
     <string name="on_boarding_message">The best food and service right here and right now</string>
     <string name="get_started">Get started</string>
     <string name="save_in_your_pocket">Save in your pocket</string>
-    <string name="sign_in_with_restaurant_account">Sign in with Restaurant</string>
-    <string name="sign_in_with_google_account">Sign in with Google</string>
-    <string name="sign_in_with_apple_account">Sign in with Apple</string>
+    <string name="password">Password</string>
+    <string name="enter_valid_password">Enter a valid password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="forget_password">Forget a password?</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="enter_valid_email">Enter a valid email</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="or_sign_up_with">Or sign Up with</string>
+    <string name="sign_in">Sign In...</string>
+    <string name="or_sign_in_with">Or sign In with</string>
+    <string name="sign_in_with_restaurant_account">Sign In with Restaurant</string>
+    <string name="sign_in_with_google_account">Sign In with Google</string>
+    <string name="sign_in_with_apple_account">Sign In with Apple</string>
     <string name="logout">Logout</string>
+    <string name="dont_have_account">Don't have an account yet?</string>
     <string name="create_an_account">Create an account</string>
     <string name="by_continue_you_agree_terms">By continuing you agree with terms and conditions</string>
     <string name="terms_and_conditions">Terms and Conditions</string>

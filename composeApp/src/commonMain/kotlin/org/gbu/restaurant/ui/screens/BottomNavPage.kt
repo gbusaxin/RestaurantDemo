@@ -1,7 +1,5 @@
 package org.gbu.restaurant.ui.screens
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,25 +12,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ExperimentalDecomposeApi
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import org.gbu.restaurant.business.common.Context
 import org.gbu.restaurant.decompose.bottomnavholder.BottomNavComponent
-import org.gbu.restaurant.decompose.root.RestaurantRootImpl
 import org.gbu.restaurant.ui.composables.BottomNavUI
 import org.gbu.restaurant.ui.screens.cart.CartNav
-import org.gbu.restaurant.ui.screens.cart.CartPage
 import org.gbu.restaurant.ui.screens.home.HomeNav
-import org.gbu.restaurant.ui.screens.menu.MenuPage
 import org.gbu.restaurant.ui.screens.profile.ProfileNav
 import org.gbu.restaurant.ui.screens.wish_list.WishListNav
 
-@OptIn(ExperimentalDecomposeApi::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun BottomNavPage(
     bottomNavComponent: BottomNavComponent,
-    onNavigationToMainChild: (child: RestaurantRootImpl.MainNavigationConfig) -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
     context: Context
 ) {
     val configs = bottomNavComponent.configs

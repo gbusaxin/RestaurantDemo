@@ -39,6 +39,8 @@ class BottomNavComponentImpl(
     override val configs = listOf(
         BottomNavConfig.Home,
         BottomNavConfig.Cart,
+        BottomNavConfig.WishList,
+        BottomNavConfig.Profile
     )
     private val mainDispatcher = CoroutineScope(Dispatchers.Main)
 

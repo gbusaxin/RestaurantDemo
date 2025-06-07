@@ -28,9 +28,9 @@ kotlin {
     }
 
     sourceSets {
-//        iosMain.dependencies {
-//            implementation(project(":composeApp"))
-//        }
+        iosMain.dependencies {
+            implementation("io.ktor:ktor-client-darwin:2.3.7")
+        }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -38,6 +38,8 @@ kotlin {
 
             implementation("com.google.android.gms:play-services-location:21.3.0")
             implementation("com.google.android.gms:play-services-maps:19.1.0")
+
+            implementation("io.ktor:ktor-client-okhttp:2.3.7")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -80,6 +82,8 @@ kotlin {
 //            implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
 
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
+
+            implementation("io.ktor:ktor-client-core:2.3.7")
         }
     }
 }
