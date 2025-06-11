@@ -8,7 +8,6 @@ import org.koin.core.component.inject
 class ProfileComponentImpl(
     componentContext: ComponentContext,
     private val onNavigateToAddress: () -> Unit,
-    private val onNavigateToEditProfile: () -> Unit,
     private val onNavigateToPaymentMethod: () -> Unit,
     private val onNavigateToMyOrders: () -> Unit,
     private val onNavigateToMyCoupons: () -> Unit,
@@ -19,10 +18,6 @@ class ProfileComponentImpl(
 
     override fun navigateToAddress() {
         onNavigateToAddress()
-    }
-
-    override fun navigateToEditProfile() {
-        onNavigateToEditProfile()
     }
 
     override fun navigateToPaymentMethod() {

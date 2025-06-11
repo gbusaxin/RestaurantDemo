@@ -32,9 +32,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import restaurantdemo.composeapp.generated.resources.Res
 import restaurantdemo.composeapp.generated.resources.address
-import restaurantdemo.composeapp.generated.resources.compose_multiplatform
 import restaurantdemo.composeapp.generated.resources.coupon_icon
-import restaurantdemo.composeapp.generated.resources.edit_profile
 import restaurantdemo.composeapp.generated.resources.help_and_support
 import restaurantdemo.composeapp.generated.resources.help_and_support_icon
 import restaurantdemo.composeapp.generated.resources.location_icon
@@ -46,7 +44,6 @@ import restaurantdemo.composeapp.generated.resources.payment_methods
 import restaurantdemo.composeapp.generated.resources.profile
 import restaurantdemo.composeapp.generated.resources.settings
 import restaurantdemo.composeapp.generated.resources.settings_icon
-import restaurantdemo.composeapp.generated.resources.user_profile_icon
 
 @Composable
 fun ProfilePage(
@@ -54,11 +51,9 @@ fun ProfilePage(
     events: (ProfileEvent) -> Unit,
     errors: Flow<UIComponent>,
     navigateToAddress: () -> Unit,
-    navigateToEditProfile: () -> Unit,
     navigateToPaymentMethod: () -> Unit,
     navigateToMyOrders: () -> Unit,
     navigateToMyCoupons: () -> Unit,
-    navigateToMyWallet: () -> Unit,
     navigateToSettings: () -> Unit,
 ) {
 
@@ -89,12 +84,6 @@ fun ProfilePage(
             Spacer(Modifier.height(32.dp))
 
             Column(Modifier.fillMaxWidth()) {
-                ProfileItemBox(
-                    title = stringResource(Res.string.edit_profile),
-                    image = Res.drawable.user_profile_icon,
-                ) {
-                    navigateToEditProfile()
-                }
                 ProfileItemBox(
                     title = stringResource(Res.string.address),
                     image = Res.drawable.location_icon,

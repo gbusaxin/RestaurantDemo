@@ -37,7 +37,6 @@ fun ProfileNav(root: ProfileNavComponent) {
                         events = viewModel::onTriggerEvent,
                         errors = viewModel.errors,
                         navigateToAddress = { child.component.navigateToAddress() },
-                        navigateToEditProfile = { child.component.navigateToEditProfile() },
                         navigateToPaymentMethod = { child.component.navigateToPaymentMethod() },
                         navigateToMyOrders = { child.component.navigateToMyOrders() },
                         navigateToMyCoupons = { child.component.navigateToMyCoupons() },
