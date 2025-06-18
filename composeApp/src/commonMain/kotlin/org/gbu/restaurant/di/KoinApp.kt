@@ -1,6 +1,5 @@
 package org.gbu.restaurant.di
 
-import androidx.compose.runtime.compositionLocalOf
 import org.gbu.restaurant.business.common.Context
 import org.gbu.restaurant.business.core.AppDataStore
 import org.gbu.restaurant.business.core.AppDataStoreManager
@@ -20,11 +19,14 @@ import org.gbu.restaurant.business.usecase.SetOnBoardingUseCase
 import org.gbu.restaurant.ui.screens.add_address.viewmodel.AddAddressViewModel
 import org.gbu.restaurant.ui.screens.address.viewmodel.AddressViewModel
 import org.gbu.restaurant.ui.screens.cart.viewmodel.CartViewModel
+import org.gbu.restaurant.ui.screens.categories.viewmodel.CategoriesViewModel
 import org.gbu.restaurant.ui.screens.checkout.viewmodel.CheckoutViewModel
+import org.gbu.restaurant.ui.screens.detail.viewmodel.DetailViewModel
 import org.gbu.restaurant.ui.screens.home.viewmodel.HomeViewModel
 import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailsViewModel
 import org.gbu.restaurant.ui.screens.my_coupons.viewmodel.MyCouponsViewModel
 import org.gbu.restaurant.ui.screens.my_orders.viewmodel.MyOrdersViewModel
+import org.gbu.restaurant.ui.screens.notifications.viewmodel.NotificationsViewModel
 import org.gbu.restaurant.ui.screens.on_boarding.viewmodel.OnBoardingViewModel
 import org.gbu.restaurant.ui.screens.payment_method.viewmodel.PaymentMethodViewModel
 import org.gbu.restaurant.ui.screens.profile.viewmodel.ProfileViewModel
@@ -73,6 +75,9 @@ fun doInitKoinApplication(
                             getSearchFilterUseCase = get()
                         )
                     }
+                    factory<CategoriesViewModel>{CategoriesViewModel(getHomeUseCase = get())}
+                    factory<DetailViewModel> { DetailViewModel() }
+                    factory<NotificationsViewModel> { NotificationsViewModel() }
                     single<GetOrdersUseCase> { GetOrdersUseCase(appDataStoreManager = get()) }
                     single<SearchUseCase> { SearchUseCase(appDataStoreManager = get()) }
                     single<GetSearchFilterUseCase> { GetSearchFilterUseCase(appDataStoreManager = get()) }
@@ -99,8 +104,4 @@ fun doInitKoinApplication(
         createEagerInstances()
     }
     return startKoin(koinApplication)
-}
-
-val LocalKoinApplication = compositionLocalOf<KoinApplication> {
-    error("koin application is not initialized")
 }
