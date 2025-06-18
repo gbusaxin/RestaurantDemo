@@ -51,7 +51,6 @@ fun mainViewController(
 
     RestaurantApplication(
         context = Context(),
-        sensorManager = sensorManager,
         root = root
     )
 }

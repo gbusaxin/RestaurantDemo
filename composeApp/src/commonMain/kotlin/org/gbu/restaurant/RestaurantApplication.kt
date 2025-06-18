@@ -19,20 +19,12 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.moriatsushi.insetsx.SystemBarsBehavior
 import com.moriatsushi.insetsx.rememberWindowInsetsController
 import org.gbu.restaurant.business.common.Context
-import org.gbu.restaurant.business.common.SensorManager
 import org.gbu.restaurant.decompose.root.RestaurantRoot
 import org.gbu.restaurant.decompose.root.RestaurantRootImpl
 import org.gbu.restaurant.ui.screens.BottomNavPage
 import org.gbu.restaurant.ui.screens.ContactPage
 import org.gbu.restaurant.ui.screens.LoginPage
 import org.gbu.restaurant.ui.screens.PhoneVerificationPage
-import org.gbu.restaurant.ui.screens.add_address.AddAddressInfoPage
-import org.gbu.restaurant.ui.screens.add_address.AddAddressPage
-import org.gbu.restaurant.ui.screens.add_address.viewmodel.AddAddressViewModel
-import org.gbu.restaurant.ui.screens.address.AddressPage
-import org.gbu.restaurant.ui.screens.checkout.CheckoutPage
-import org.gbu.restaurant.ui.screens.menu_detail.MenuDetailsPage
-import org.gbu.restaurant.ui.screens.menu_detail.viewmodel.MenuDetailEvent
 import org.gbu.restaurant.ui.screens.on_boarding.OnBoardingPage
 import org.gbu.restaurant.ui.screens.signin_options.SignInOptionsPage
 import org.gbu.restaurant.ui.screens.splash.SplashPage
@@ -41,7 +33,6 @@ import org.gbu.restaurant.viewmodels.LocalUser
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RestaurantApplication(
-    sensorManager: SensorManager?,
     context: Context,
     root: RestaurantRootImpl
 ) {
@@ -67,7 +58,6 @@ fun RestaurantApplication(
             LocalUser provides user
         ) {
             SharedTransitionLayout {
-                val sharedTransitionScope = this
                 val stack by root.backstack.subscribeAsState()
 
                 Column(
@@ -147,7 +137,12 @@ fun RestaurantApplication(
                             is RestaurantRoot.MainDestinationChild.BottomNavHolder -> {
                                 BottomNavPage(
                                     bottomNavComponent = child.component,
-                                    context = context
+                                    context = context,
+                                    logout = {
+                                        child.component.onNavigationToMainChild(
+                                            RestaurantRootImpl.MainNavigationConfig.Splash
+                                        )
+                                    }
                                 )
                             }
                         }

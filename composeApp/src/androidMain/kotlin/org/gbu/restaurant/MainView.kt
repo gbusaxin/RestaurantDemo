@@ -17,28 +17,5 @@ import org.gbu.restaurant.sensor.SensorManagerImpl
 
 @Composable
 fun MainView(appContext: Context, root: RestaurantRootImpl) {
-
-    val sensorManager = SensorManagerImpl()
-
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-
-    DisposableEffect(Unit) {
-        val dataManager = SensorDataManager(context)
-        dataManager.init()
-
-        val job = scope.launch {
-            dataManager.data
-                .receiveAsFlow()
-                .onEach { sensorManager.listener?.onUpdate(it) }
-                .collect()
-        }
-
-        onDispose {
-            dataManager.cancel()
-            job.cancel()
-        }
-    }
-
-    RestaurantApplication(sensorManager = sensorManager, context = appContext, root = root)
+    RestaurantApplication(context = appContext, root = root)
 }

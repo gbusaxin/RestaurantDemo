@@ -25,7 +25,8 @@ import org.gbu.restaurant.ui.screens.wish_list.WishListNav
 @Composable
 fun BottomNavPage(
     bottomNavComponent: BottomNavComponent,
-    context: Context
+    context: Context,
+    logout: () -> Unit
 ) {
     val configs = bottomNavComponent.configs
     val pages by bottomNavComponent.pages.subscribeAsState()
@@ -61,7 +62,7 @@ fun BottomNavPage(
                 }
 
                 is BottomNavComponent.BottomNavChild.Profile -> {
-                    ProfileNav(page.component)
+                    ProfileNav(page.component, context = context, logout = logout)
                 }
 
                 else -> {
